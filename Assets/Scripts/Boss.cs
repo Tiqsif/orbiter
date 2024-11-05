@@ -45,7 +45,6 @@ public class Boss : MonoBehaviour
             spawnPercent += Time.deltaTime * spawnSpeed;
             float curvePercent = 1 - Mathf.Cos(spawnPercent * Mathf.PI * 0.5f);
             transform.position = Vector3.Lerp(startPosition, targetPosition, curvePercent);
-            Debug.Log("Spawn Routine");
             yield return null;
         }
         transform.position = targetPosition;
@@ -54,6 +53,7 @@ public class Boss : MonoBehaviour
     public virtual void Die()
     {
         Debug.Log("Boss Die");
+        StartCoroutine(DieRoutine());
     }
 
     public virtual IEnumerator DieRoutine()
@@ -63,16 +63,20 @@ public class Boss : MonoBehaviour
     public virtual void Idle()
     {
         Debug.Log("Boss Idle");
+        StartCoroutine(IdleRoutine());
     }
 
     public virtual IEnumerator IdleRoutine()
     {
         yield return null;
+        yield return new WaitForSeconds(5f);
+        ChangeState(BossState.Attack);
     }
 
     public virtual void Attack()
     {
         Debug.Log("Boss Attack");
+        StartCoroutine(AttackRoutine());
     }
 
     public virtual IEnumerator AttackRoutine()
