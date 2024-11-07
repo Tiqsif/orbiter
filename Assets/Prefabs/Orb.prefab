@@ -129,4 +129,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 1
-  indicatorMaterial: {fileID: 2100000, guid: 4d276113dd5ff0e4a92f18ff1c77bc5b, type: 2}
+  indicatorMaterial0: {fileID: 2100000, guid: 4d276113dd5ff0e4a92f18ff1c77bc5b, type: 2}
+  indicatorMaterial1: {fileID: 2100000, guid: c4f443e1ac28e7f42875e057fa1492fb, type: 2}
