@@ -6,7 +6,7 @@ using UnityEngine;
 public class ArcManager : MonoBehaviour
 {
     public Transform player;
-    private float circleRadius = 10;
+    public float circleRadius = 10;
     private void Awake()
     {
         Orb.OnOrbArrived +=OnOrbArrived;
@@ -62,4 +62,6 @@ public class ArcManager : MonoBehaviour
             // Trigger hit or damage logic
         }
     }
+
+    
 }

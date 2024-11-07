@@ -19,7 +19,8 @@ public class Eternatus : Boss
     public override IEnumerator AttackRoutine()
     {
         yield return base.AttackRoutine();
-        yield return StartCoroutine(SymmetricalProjectile(5, 0f, .5f));
+        float offset = Random.Range(0, 360);
+        yield return StartCoroutine(SymmetricalProjectile(3, offset, 1.5f));
         /*
         int attackNo = Random.Range(0, totalAttacks);
         switch (attackNo)
@@ -51,8 +52,11 @@ public class Eternatus : Boss
             Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * baseEmitter.forward; // direction of the current projectile
 
             GameObject projectile = Instantiate(projectilePrefab, baseEmitter.position, Quaternion.identity);
-            projectile.GetComponent<Orb>().Launch(direction * projectileSpeed, 10f);
-
+            if (projectile.TryGetComponent(out Orb orb))
+            {
+                orb.Launch(direction * projectileSpeed);
+                orb.CreateIndicator();
+            }
             //Debug.Log(direction.normalized * projectileSpeed);
 
             Debug.DrawLine(baseEmitter.position, baseEmitter.position + direction.normalized * 2, Color.red, 5f);

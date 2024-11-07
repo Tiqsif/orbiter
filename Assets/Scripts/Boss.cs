@@ -69,7 +69,7 @@ public class Boss : MonoBehaviour
     public virtual IEnumerator IdleRoutine()
     {
         yield return null;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         ChangeState(BossState.Attack);
     }
 
