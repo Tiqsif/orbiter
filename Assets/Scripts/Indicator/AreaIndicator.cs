@@ -133,8 +133,7 @@ public class AreaIndicator : MonoBehaviour
             if (newAlpha == startAlpha && targetAlpha > startAlpha)
             {
                 // change blip clips pitch a little higher through time to create a sense of urgency
-                AudioManager.Instance.PlaySFX(blipClip);
-                AudioManager.Instance.GetSFXSource(blipClip).pitch += pitchChange;
+                AudioManager.Instance.PlaySFX(blipClip).pitch += pitchChange;
                 pitchChange += 0.2f;
             }
             /*

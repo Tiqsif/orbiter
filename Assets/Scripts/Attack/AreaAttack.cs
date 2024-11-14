@@ -5,13 +5,16 @@ using UnityEngine;
 public class AreaAttack : MonoBehaviour
 {
     public AudioClip blipClip;
+    public AudioClip particleClip;
+    public GameObject particlePrefab;
     public Material materialWhite;
     public Material materialAttack;
     protected Vector3 direction; // direction of the orb, has the speed in it
     protected bool hasIndicator = false;
     protected AreaIndicator indicator;
     private ArcManager arcManager;
-
+    private GameObject particleHolder;
+    private AudioSource source;
     private void Awake()
     {
         arcManager = FindObjectOfType<ArcManager>();
@@ -41,6 +44,7 @@ public class AreaAttack : MonoBehaviour
         yield return StartCoroutine(indicator.FlashRoutine(waitTime));
 
         indicator.HitMode();
+        ActivateParticles(arcAngle, activeTime);
         float elepsedTime = 0;
         while (elepsedTime < activeTime)
         {
@@ -49,11 +53,42 @@ public class AreaAttack : MonoBehaviour
             yield return null;
         }
 
+        Destroy(source.gameObject);
         ClearIndicator();
+        ClearParticles();
+    }
+
+    public void ActivateParticles(float arcAngle, float activeTime)
+    {
+        float particleAngle = 30f;
+        int numParticles = (int)(arcAngle / particleAngle);
+        // instantiate particle prefab for every particleAngle in the arcAngle
+        // starting from the direction - arcAngle / 2 to direction + arcAngle / 2
+        for (int i = 0; i < numParticles; i++)
+        {
+            Vector3 particleDirection = Quaternion.Euler(0, (-arcAngle / 2) + i * particleAngle + particleAngle/2, 0) * direction;
+            GameObject particle = Instantiate(particlePrefab, arcManager.transform.position, Quaternion.identity);
+            if (particleHolder == null)
+            {
+                particleHolder = new GameObject("ParticleHolder");
+                particleHolder.transform.parent = this.transform;
+            }
+            particle.transform.parent = particleHolder.transform;
+            // apply the particledirection to the particle
+            
+            particle.transform.forward = particleDirection;
+        }
+
+        source = AudioManager.Instance.PlaySFX(particleClip, loop:true);
+        source.pitch += Random.Range(0.3f,0.5f);
+        source.loop = true;
 
     }
 
-    
+    public void ClearParticles()
+    {
+        Destroy(particleHolder);
+    }
 
     public void ClearIndicator()
     {

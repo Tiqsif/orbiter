@@ -22,19 +22,19 @@ public class Eternatus : Boss
         yield return base.AttackRoutine();
         float offset = Random.Range(0, 360);
         //yield return StartCoroutine(SymmetricalProjectile(3, offset, 1.5f));
-        yield return StartCoroutine(AreaAttack(1,offset,90,5,2));
-        /*
-        int attackNo = Random.Range(0, totalAttacks);
+        //yield return StartCoroutine(AreaAttack(1,0f,120,1.5f,4f));
+        
+        int attackNo = Random.Range(0, 2);
         switch (attackNo)
         {
             case 0:
-                StartCoroutine(SymmetricalProjectile(3, 0f));
+                StartCoroutine(SymmetricalProjectile(Random.Range(2,6), Random.Range(0,180), Random.Range(0f,1f)));
                 break;
             case 1:
-                StartCoroutine(SymmetricalProjectile(5, 0f));
+                StartCoroutine(AreaAttack(Random.Range(1, 4), Random.Range(0f, 180f), Random.Range(30f, 90f), Random.Range(2f,4f), Random.Range(2f,3f)));
                 break;
         }
-        */
+        
         ChangeState(BossState.Idle);
     }
 

@@ -45,5 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blipClip: {fileID: 8300000, guid: 049d0f7e8c8190c47866361171c3d246, type: 3}
+  particleClip: {fileID: 8300000, guid: b268e12dcce9fa44c9f93baf6c9efb54, type: 3}
+  particlePrefab: {fileID: 9116462057259809484, guid: 5483a84e1c7c01c4faca48004a87d954,
+    type: 3}
   materialWhite: {fileID: 2100000, guid: 9e2f1fe484ec0a34283e784db9a89a74, type: 2}
   materialAttack: {fileID: 2100000, guid: c4f443e1ac28e7f42875e057fa1492fb, type: 2}
