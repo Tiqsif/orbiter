@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateAround: {fileID: 0}
-  speed: 4
+  speed: 3
   rotateRadius: 10
   tiltAngle: -15
   tiltDuration: 2

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.17893505, g: 0.22405474, b: 0.30590132, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ef25b0883388347a8799a5e74e417e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: 1
+  volume: 0.8
   musicVolume: 0.2
   ambienceVolume: 1
   musicClip: {fileID: 8300000, guid: 031bbb98a7e1a3c4684afe0c45789da8, type: 3}
@@ -234,7 +234,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 25
+  orthographic size: 28
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -258,13 +258,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 28.96, z: -27.61}
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
+  m_LocalPosition: {x: 0, y: 30, z: -26.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,7 +348,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.7
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -397,13 +397,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.45473358, y: -0.15402788, z: 0.08018184, w: 0.8735351}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 55, y: -20, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,7 +609,7 @@ PrefabInstance:
     - target: {fileID: 88683155991921998, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 88683155991921998, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
@@ -659,12 +659,17 @@ PrefabInstance:
     - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
       propertyPath: speed
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
       propertyPath: tiltAngle
       value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
+        type: 3}
+      propertyPath: rotateRadius
+      value: 12.5
       objectReference: {fileID: 0}
     - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
@@ -689,10 +694,20 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1575614590}
+    - target: {fileID: 179773101557068435, guid: ee7641d6c3caaef4797bfb18f052b113,
+        type: 3}
+      propertyPath: circleRadius
+      value: 12.5
+      objectReference: {fileID: 0}
     - target: {fileID: 299926245733651246, guid: ee7641d6c3caaef4797bfb18f052b113,
         type: 3}
       propertyPath: m_Name
       value: Circle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1855303095469088879, guid: ee7641d6c3caaef4797bfb18f052b113,
+        type: 3}
+      propertyPath: radius
+      value: 12.5
       objectReference: {fileID: 0}
     - target: {fileID: 7430979890212775946, guid: ee7641d6c3caaef4797bfb18f052b113,
         type: 3}
@@ -965,7 +980,7 @@ PrefabInstance:
     - target: {fileID: 4063559945455522839, guid: dd317db0911a66b4f8e0b3e1f6dc146d,
         type: 3}
       propertyPath: projectileSpeed
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4063559945455522839, guid: dd317db0911a66b4f8e0b3e1f6dc146d,
         type: 3}

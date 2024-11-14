@@ -110,13 +110,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  model: {fileID: 8245186613560296478}
+  spawnClip: {fileID: 8300000, guid: ff17a8ca619d4644aa15a57c728c044d, type: 3}
+  idleClip: {fileID: 0}
+  deathClip: {fileID: 0}
+  attackClip: {fileID: 8300000, guid: 49bee27c3d72b59499c73174df4e6fba, type: 3}
   currentState: 0
   previousState: 0
   spawnSpeed: 1
   baseEmitter: {fileID: 2013781583038574049}
   mouthEmitter: {fileID: 6044579759696921093}
-  projectilePrefab: {fileID: 0}
-  projectileSpeed: 5
+  projectilePrefab: {fileID: 7324917099604628575, guid: 0889fd8f815f7494998715821756f0f6,
+    type: 3}
+  areaAttackPrefab: {fileID: 6146401734833961241, guid: 06525dffa332e2d42a5412e191ae9a84,
+    type: 3}
+  projectileSpeed: 10
 --- !u!1001 &6896773069476466506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,6 +217,12 @@ Transform:
 --- !u!4 &2652217445017741188 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: f3a6b7c456ec6f44ea5a333e0457f363,
+    type: 3}
+  m_PrefabInstance: {fileID: 6896773069476466506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8245186613560296478 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5919265813508830380, guid: f3a6b7c456ec6f44ea5a333e0457f363,
     type: 3}
   m_PrefabInstance: {fileID: 6896773069476466506}
   m_PrefabAsset: {fileID: 0}

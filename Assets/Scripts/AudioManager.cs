@@ -116,12 +116,12 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(PlaySFXRoutine(clip, delay));
     }
 
-    public void PlaySFX(AudioClip clip, float delay, float volume)
+    public void PlaySFX(AudioClip clip, float delay, float volumeModifier)
     {
-        StartCoroutine(PlaySFXRoutine(clip, delay, volume));
+        StartCoroutine(PlaySFXRoutine(clip, delay, volumeModifier));
     }
     
-    IEnumerator PlaySFXRoutine(AudioClip clip, float delay, float volume)
+    IEnumerator PlaySFXRoutine(AudioClip clip, float delay, float volumeModifier)
     {
         yield return new WaitForSeconds(delay);
         if (clip == null)
@@ -136,7 +136,7 @@ public class AudioManager : MonoBehaviour
         tempAudioObject.transform.parent = AudioManager.Instance.transform;
         // Add an AudioSource component to the GameObject
         AudioSource audioSource = tempAudioObject.AddComponent<AudioSource>();
-        audioSource.volume = volume;
+        audioSource.volume = volume * volumeModifier;
         // Set the clip to the AudioSource
         audioSource.clip = clip;
 
@@ -170,6 +170,21 @@ public class AudioManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public AudioSource GetSFXSource(AudioClip clip)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.TryGetComponent(out AudioSource audioSource))
+            {
+                if (audioSource.clip == clip)
+                {
+                    return audioSource;
+                }
+            }
+        }
+        return null;
     }
     public void PlayMusic(AudioClip musicClip, bool isLooping = false)
     {
