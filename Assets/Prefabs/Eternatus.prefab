@@ -108,15 +108,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4363cf36b7a494fb591a6b7d28f3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficulty: 0
+  attackCounter: 0
   maxHealth: 100
   currentHealth: 0
-  model: {fileID: 8245186613560296478}
+  model: {fileID: 2652217445017741188}
   spawnClip: {fileID: 8300000, guid: ff17a8ca619d4644aa15a57c728c044d, type: 3}
   idleClip: {fileID: 0}
   deathClip: {fileID: 0}
   attackClip: {fileID: 8300000, guid: 49bee27c3d72b59499c73174df4e6fba, type: 3}
   currentState: 0
-  previousState: 0
+  previousState: 1
   spawnSpeed: 1
   baseEmitter: {fileID: 2013781583038574049}
   mouthEmitter: {fileID: 6044579759696921093}
@@ -124,7 +126,7 @@ MonoBehaviour:
     type: 3}
   areaAttackPrefab: {fileID: 6146401734833961241, guid: 06525dffa332e2d42a5412e191ae9a84,
     type: 3}
-  projectileSpeed: 10
+  projectileSpeed: 12
 --- !u!1001 &6896773069476466506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -217,12 +219,6 @@ Transform:
 --- !u!4 &2652217445017741188 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: f3a6b7c456ec6f44ea5a333e0457f363,
-    type: 3}
-  m_PrefabInstance: {fileID: 6896773069476466506}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8245186613560296478 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -5919265813508830380, guid: f3a6b7c456ec6f44ea5a333e0457f363,
     type: 3}
   m_PrefabInstance: {fileID: 6896773069476466506}
   m_PrefabAsset: {fileID: 0}

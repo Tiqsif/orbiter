@@ -49,4 +49,4 @@ MonoBehaviour:
   particlePrefab: {fileID: 9116462057259809484, guid: 5483a84e1c7c01c4faca48004a87d954,
     type: 3}
   materialWhite: {fileID: 2100000, guid: 9e2f1fe484ec0a34283e784db9a89a74, type: 2}
-  materialAttack: {fileID: 2100000, guid: c4f443e1ac28e7f42875e057fa1492fb, type: 2}
+  materialAttack: {fileID: 2100000, guid: 3bc96f3f95d88474b92d5504810bacd2, type: 2}

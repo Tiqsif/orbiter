@@ -33,6 +33,8 @@ public class ProjectileIndicator : MonoBehaviour
 
         mesh0 = new Mesh();
         GameObject indicator0 = new GameObject("Indicator0");
+        indicator0.layer = LayerMask.NameToLayer("Indicator");
+        indicator0.tag = "Indicator";
         indicator0.transform.parent = this.transform;
         meshFilter0 = indicator0.AddComponent<MeshFilter>();
         meshRenderer0 = indicator0.AddComponent<MeshRenderer>();
@@ -40,12 +42,14 @@ public class ProjectileIndicator : MonoBehaviour
 
         mesh1 = new Mesh();
         GameObject indicator1 = new GameObject("Indicator1");
+        indicator1.layer = LayerMask.NameToLayer("Indicator");
+        indicator1.tag = "Indicator";
         indicator1.transform.parent = this.transform;
         meshFilter1 = indicator1.AddComponent<MeshFilter>();
         meshRenderer1 = indicator1.AddComponent<MeshRenderer>();
         meshFilter1.mesh = mesh1;
 
-        indicator1.transform.position = indicator0.transform.position + new Vector3(0, 0.1f, 0);
+        indicator1.transform.position = indicator0.transform.position + new Vector3(0, 0.5f, 0);
 
         // caclulate angle from just direction
         angle = Mathf.Atan2(direction.normalized.z, direction.normalized.x) * Mathf.Rad2Deg;

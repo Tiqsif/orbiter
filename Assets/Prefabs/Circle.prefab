@@ -64,6 +64,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   circleRadius: 10
+  riskZonePrefab: {fileID: 6683082796326445741, guid: 39d551f3b456a7c46a16ffbb403ec513,
+    type: 3}
 --- !u!120 &1280154228589609586
 LineRenderer:
   serializedVersion: 2

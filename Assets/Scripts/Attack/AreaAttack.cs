@@ -9,7 +9,7 @@ public class AreaAttack : MonoBehaviour
     public GameObject particlePrefab;
     public Material materialWhite;
     public Material materialAttack;
-    protected Vector3 direction; // direction of the orb, has the speed in it
+    protected Vector3 direction;
     protected bool hasIndicator = false;
     protected AreaIndicator indicator;
     private ArcManager arcManager;
@@ -43,6 +43,8 @@ public class AreaAttack : MonoBehaviour
         // create a visual indicator for the orb
         yield return StartCoroutine(indicator.FlashRoutine(waitTime));
 
+        arcManager.CreateRiskZone(direction, arcAngle+30, activeTime);
+
         indicator.HitMode();
         ActivateParticles(arcAngle, activeTime);
         float elepsedTime = 0;
@@ -56,11 +58,12 @@ public class AreaAttack : MonoBehaviour
         Destroy(source.gameObject);
         ClearIndicator();
         ClearParticles();
+        Destroy(this.gameObject);
     }
 
     public void ActivateParticles(float arcAngle, float activeTime)
     {
-        float particleAngle = 30f;
+        float particleAngle = 25f;
         int numParticles = (int)(arcAngle / particleAngle);
         // instantiate particle prefab for every particleAngle in the arcAngle
         // starting from the direction - arcAngle / 2 to direction + arcAngle / 2

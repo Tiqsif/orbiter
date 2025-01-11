@@ -1,17 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ArcManager : MonoBehaviour
 {
     public Transform player;
     public float circleRadius = 10;
+
+
+    public delegate void OnPlayerHit();
+    public static OnPlayerHit onPlayerHit;
+
+
+    public GameObject riskZonePrefab;
+    private List<RiskZone> riskZones = new List<RiskZone>();
+
+    public delegate void OnRiskZoneHit();
+    public static OnRiskZoneHit onRiskZoneHit;
+
     private void Awake()
     {
         Orb.OnOrbArrived +=OnOrbArrived;
         player = player? player : GameObject.FindWithTag("Player").transform;
-        if (player.TryGetComponent(out PlayerMovement movement)) movement.rotateAround = transform; movement.rotateRadius = circleRadius;
+
+        if (player.TryGetComponent(out Player movement)) movement.rotateAround = transform; movement.rotateRadius = circleRadius;
     }
     private void OnDestroy()
     {
@@ -22,25 +36,36 @@ public class ArcManager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        CheckRiskZone();
     }
 
     private bool IsWithinArc(float targetAngle, float centerAngle, float arcWidth)
     {
-        float lowerBound = centerAngle - arcWidth / 2;
-        float upperBound = centerAngle + arcWidth / 2;
+        float halfArc = arcWidth / 2f;
+        float startAngle = (centerAngle - halfArc + 360f) % 360f;
+        float endAngle = (centerAngle + halfArc + 360f) % 360f;
 
-        // Handle wrap-around at 0/360 degrees
-        if (lowerBound < 0) lowerBound += 360;
-        if (upperBound >= 360) upperBound -= 360;
+        // Normalize target angle
+        targetAngle = (targetAngle + 360f) % 360f;
 
-        if (lowerBound < upperBound)
-            return targetAngle >= lowerBound && targetAngle <= upperBound;
+        if (Mathf.Approximately(arcWidth, 360f))
+        {
+            // Special case: full circle
+            return true;
+        }
+
+        if (startAngle < endAngle)
+        {
+            // Standard case: angle range does not cross 360
+            return targetAngle >= startAngle && targetAngle <= endAngle;
+        }
         else
-            return targetAngle >= lowerBound || targetAngle <= upperBound;
+        {
+            // Wrap-around case: angle range crosses 360
+            return targetAngle >= startAngle || targetAngle <= endAngle;
+        }
     }
 
     private void OnOrbArrived(Orb orb)
@@ -60,6 +85,7 @@ public class ArcManager : MonoBehaviour
         if (IsWithinArc(angleToPlayer, angleToProjectile, arcAngle))
         {
             Debug.Log("Player is within hit area!");
+            //onPlayerHit?.Invoke();
             // Trigger hit or damage logic
         }
     }
@@ -82,7 +108,74 @@ public class ArcManager : MonoBehaviour
         if (IsWithinArc(angleToPlayer, areaCenterAngle, arcAngle))
         {
             Debug.Log("Player is within hit area!");
+            //onPlayerHit?.Invoke();
             // Trigger hit or damage logic
         }
+    }
+
+    [ContextMenu("Test Risk")]
+    public void testrisk()
+    {
+        CreateRiskZone(-Vector3.forward, 90, 5);
+    }
+    public void CreateRiskZone(Vector3 direction, float arcAgle, float lifetime)
+    {
+        Vector3 spawnPosition = transform.position;
+        spawnPosition.y += 0.05f;
+        GameObject riskZone = Instantiate(riskZonePrefab, spawnPosition, Quaternion.identity);
+        RiskZone zone = riskZone.GetComponent<RiskZone>();
+        zone.Create(direction, circleRadius, arcAgle, lifetime);
+        riskZones.Add(zone);
+        StartCoroutine(DestroyRiskZoneAfter(zone, lifetime));
+    }
+    private IEnumerator DestroyRiskZoneAfter(RiskZone zone, float wait)
+    {
+        yield return new WaitForSeconds(wait);
+        riskZones.Remove(zone);
+        Destroy(zone.gameObject);
+    }
+    private void CheckRiskZone()
+    {
+        float angleToPlayer = Mathf.Atan2(player.position.z - transform.position.z, player.position.x - transform.position.x) * Mathf.Rad2Deg;
+        //Debug.Log("ArcMan: angletoPlayer: " + angleToPlayer);
+        for (int i = riskZones.Count - 1; i >= 0; i--) 
+        {
+            RiskZone zone = riskZones[i];
+            float zoneAngle = Mathf.Atan2(zone.direction.z, zone.direction.x) * Mathf.Rad2Deg;
+                Vector3 left = transform.position + new Vector3(Mathf.Cos((zoneAngle - zone.arcAngle / 2) * Mathf.Deg2Rad), 0, Mathf.Sin((zoneAngle - zone.arcAngle / 2) * Mathf.Deg2Rad)) * circleRadius;
+                Vector3 right = transform.position + new Vector3(Mathf.Cos((zoneAngle + zone.arcAngle / 2) * Mathf.Deg2Rad), 0, Mathf.Sin((zoneAngle + zone.arcAngle / 2) * Mathf.Deg2Rad)) * circleRadius;
+                //Debug.DrawLine(transform.position, left, Color.blue, 1f);
+                //Debug.DrawLine(transform.position, right, Color.red, 1f);
+            if (IsWithinArc(angleToPlayer, zoneAngle, zone.arcAngle))
+            {
+                Debug.DrawLine(transform.position, player.position, Color.green, 1f);
+                onRiskZoneHit?.Invoke();
+                // draw line at the left and the right of the zone
+            }
+        }
+
+    }
+
+    public Vector3 GetPositionFromAngle(float angle)
+    {
+        return transform.position + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad)) * circleRadius;
+
+    }
+
+    public float GetAngleFromPosition(Vector3 position)
+    {
+        return Mathf.Atan2(position.z - transform.position.z, position.x - transform.position.x) * Mathf.Rad2Deg;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(GetPositionFromAngle(0), 1);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(GetPositionFromAngle(90), 1);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(GetPositionFromAngle(180), 1);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(GetPositionFromAngle(270), 1);
     }
 }

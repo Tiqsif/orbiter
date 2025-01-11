@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
+    public int difficulty;
+    public int attackCounter = 0;
     public float maxHealth;
     public float currentHealth;
     public Transform model;
@@ -12,11 +14,18 @@ public class Boss : MonoBehaviour
     public AudioClip idleClip;
     public AudioClip deathClip;
     public AudioClip attackClip;
-
+    protected ArcManager arcManager;
     public BossState currentState;
     [HideInInspector] public BossState previousState;
 
     public float spawnSpeed = 1.0f;
+
+    protected Player player;
+    public delegate void OnAttackCounterChange(int attackCounter);
+    public static OnAttackCounterChange onAttackCounterChange;
+
+    public delegate void OnBossAttack(int attackNo);
+    public static OnBossAttack onBossAttack;
     public enum BossState
     {
         Spawn,
@@ -25,20 +34,36 @@ public class Boss : MonoBehaviour
         Dead
     }
 
-    private void Awake()
+    protected void OnEnable()
+    {
+        Player.onPlayerShootBegin += OnPlayerShootBegin;
+    }
+
+    
+    protected void OnDisable()
+    {
+        Player.onPlayerShootBegin -= OnPlayerShootBegin;
+    }
+    protected void Awake()
     {
         currentHealth = maxHealth;
 
     }
-    private void Start()
+    protected void Start()
     {
+        arcManager = FindObjectOfType<ArcManager>();
+        player = FindObjectOfType<Player>();
         ChangeState(BossState.Spawn);
+    }
+    protected void Update()
+    {
+        
     }
 
 
     public virtual void Spawn()
     {
-        Debug.Log("Boss Spawn");
+        //Debug.Log("Boss Spawn");
 
         AudioManager.Instance.KillSFX(spawnClip);
         AudioManager.Instance.PlaySFX(spawnClip, 0f, 0.75f);
@@ -62,7 +87,7 @@ public class Boss : MonoBehaviour
     }
     public virtual void Die()
     {
-        Debug.Log("Boss Die");
+        //Debug.Log("Boss Die");
         StartCoroutine(DieRoutine());
     }
 
@@ -72,7 +97,7 @@ public class Boss : MonoBehaviour
     }
     public virtual void Idle()
     {
-        Debug.Log("Boss Idle");
+        //Debug.Log("Boss Idle");
         StartCoroutine(IdleRoutine());
     }
 
@@ -85,7 +110,9 @@ public class Boss : MonoBehaviour
 
     public virtual void Attack()
     {
-        Debug.Log("Boss Attack");
+        //Debug.Log("Boss Attack");
+        attackCounter ++;
+        onAttackCounterChange?.Invoke(attackCounter);
         StartCoroutine(AttackRoutine());
     }
 
@@ -105,6 +132,7 @@ public class Boss : MonoBehaviour
 
     public virtual void ChangeState(BossState newState)
     {
+        if(player.isDead) return;
         previousState = currentState;
         currentState = newState;
         switch (newState)
@@ -122,5 +150,12 @@ public class Boss : MonoBehaviour
                 Die();
                 break;
         }
+    }
+
+    public virtual void OnPlayerShootBegin()
+    {
+        
+        TakeDamage(10);
+        
     }
 }

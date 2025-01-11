@@ -18,7 +18,7 @@ public class Orb : MonoBehaviour
     {
         arcManager = FindObjectOfType<ArcManager>();
         width = GetComponentInChildren<MeshFilter>().gameObject.transform.localScale.x;
-        Debug.Log("Orb width: " + width);
+        //Debug.Log("Orb width: " + width);
         
     }
     private void Start()
@@ -50,6 +50,8 @@ public class Orb : MonoBehaviour
     {
         float distance = arcManager.circleRadius;
         StartCoroutine(LaunchRoutine(launchDirection, distance));
+        float time = distance / launchDirection.magnitude;
+        arcManager.CreateRiskZone(launchDirection, Mathf.Rad2Deg * width / arcManager.circleRadius, time);
     }
     IEnumerator LaunchRoutine(Vector3 launchDirection, float distance)
     {

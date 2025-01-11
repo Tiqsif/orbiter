@@ -22,6 +22,7 @@ public class AreaIndicator : MonoBehaviour
     private float width;
 
     private float pitchChange = 0.2f;
+    private int flashCount = 4;
 
     private ArcManager arcManager;
     public void Create(ArcManager arcManager, Vector3 direction, float width)
@@ -32,7 +33,9 @@ public class AreaIndicator : MonoBehaviour
         // create mesh. first vertex is the center of the circle, the rest are on the circle
 
         mesh = new Mesh();
-        GameObject indicator = new GameObject("Indicator");
+        GameObject indicator = new GameObject("IndicatorMesh");
+        indicator.layer = LayerMask.NameToLayer("Indicator");
+        indicator.tag = "Indicator";
         indicator.transform.parent = this.transform;
         meshFilter = indicator.AddComponent<MeshFilter>();
         meshRenderer = indicator.AddComponent<MeshRenderer>();
@@ -91,27 +94,12 @@ public class AreaIndicator : MonoBehaviour
 
     public IEnumerator FlashRoutine(float duration)
     {
-        float elapsedTotalTime = 0f;
-        float currentFlashDuration = duration / 10f; // Initial flash duration
-        float minFlashDuration = 0.25f; // Minimum flash duration
-
         float startAlpha = materialWhite.color.a;
-
-        while (elapsedTotalTime < duration)
+        // flash flashCount times
+        for (int i = 0; i < flashCount; i++)
         {
-            // Ensure each flash is within the minimum duration
-            currentFlashDuration = Mathf.Max(currentFlashDuration, minFlashDuration);
-
-            // Fade in
-            yield return StartCoroutine(FadeAlpha(0f, currentFlashDuration / 2));
-            // Fade out
-            yield return StartCoroutine(FadeAlpha(startAlpha, currentFlashDuration / 2));
-
-            // Increase the elapsed total time
-            elapsedTotalTime += currentFlashDuration;
-
-            // Gradually decrease the flash duration to speed up
-            currentFlashDuration *= 0.9f; // Adjust rate of speed increase here
+            yield return StartCoroutine(FadeAlpha(0f, (duration / flashCount) / 2));
+            yield return StartCoroutine(FadeAlpha(startAlpha, (duration / flashCount) / 2));
         }
 
         Color finalColor = materialWhite.color;
@@ -123,6 +111,7 @@ public class AreaIndicator : MonoBehaviour
     {
         float startAlpha = materialWhite.color.a;
         float elapsedTime = 0f;
+        //Debug.Log("Start Alpha: " + startAlpha + " Target Alpha: " + targetAlpha);
 
         while (elapsedTime < duration)
         {
@@ -133,6 +122,7 @@ public class AreaIndicator : MonoBehaviour
             if (newAlpha == startAlpha && targetAlpha > startAlpha)
             {
                 // change blip clips pitch a little higher through time to create a sense of urgency
+                AudioManager.Instance.KillSFX(blipClip);
                 AudioManager.Instance.PlaySFX(blipClip).pitch += pitchChange;
                 pitchChange += 0.2f;
             }
