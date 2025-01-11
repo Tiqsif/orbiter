@@ -115,7 +115,7 @@ MonoBehaviour:
   model: {fileID: 2652217445017741188}
   spawnClip: {fileID: 8300000, guid: ff17a8ca619d4644aa15a57c728c044d, type: 3}
   idleClip: {fileID: 0}
-  deathClip: {fileID: 0}
+  deathClip: {fileID: 8300000, guid: 19791bb1589f5c7479278ca3a47e914c, type: 3}
   attackClip: {fileID: 8300000, guid: 49bee27c3d72b59499c73174df4e6fba, type: 3}
   currentState: 0
   previousState: 1

@@ -85,7 +85,7 @@ public class ArcManager : MonoBehaviour
         if (IsWithinArc(angleToPlayer, angleToProjectile, arcAngle))
         {
             Debug.Log("Player is within hit area!");
-            //onPlayerHit?.Invoke();
+            onPlayerHit?.Invoke(); // comment this for invincibility
             // Trigger hit or damage logic
         }
     }
@@ -108,7 +108,7 @@ public class ArcManager : MonoBehaviour
         if (IsWithinArc(angleToPlayer, areaCenterAngle, arcAngle))
         {
             Debug.Log("Player is within hit area!");
-            //onPlayerHit?.Invoke();
+            onPlayerHit?.Invoke(); // comment this for invincibility
             // Trigger hit or damage logic
         }
     }

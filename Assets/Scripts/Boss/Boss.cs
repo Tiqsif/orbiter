@@ -26,6 +26,9 @@ public class Boss : MonoBehaviour
 
     public delegate void OnBossAttack(int attackNo);
     public static OnBossAttack onBossAttack;
+
+    public delegate void OnBossDie();
+    public static OnBossDie onBossDie;
     public enum BossState
     {
         Spawn,
@@ -94,6 +97,13 @@ public class Boss : MonoBehaviour
     public virtual IEnumerator DieRoutine()
     {
         yield return null;
+        if (deathClip)
+        {
+            AudioManager.Instance.KillSFX(deathClip);
+            AudioManager.Instance.PlaySFX(deathClip);
+        }
+        yield return null;
+        onBossDie?.Invoke();
     }
     public virtual void Idle()
     {

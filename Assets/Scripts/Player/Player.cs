@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public bool isDead = false;
     public bool canShoot = false;
 
-    private float holdThreshold = 1f; // Seconds to qualify as a hold
+    private float holdThreshold = 0.5f; // Seconds to qualify as a hold
     private float holdTime = 0;
 
     public delegate void OnPlayerShootBegin();
@@ -126,6 +126,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Shoot");
             onPlayerShootBegin?.Invoke();
+            playerSFX.PlayShoot();
             canShoot = false;
         }
 

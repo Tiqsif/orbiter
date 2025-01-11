@@ -170,10 +170,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotateAround: {fileID: 0}
   speed: 3
+  angularVelocity: 0
   rotateRadius: 10
   tiltAngle: -15
   tiltDuration: 2
   model: {fileID: 9187315852949739026}
+  isDead: 0
+  canShoot: 0
 --- !u!114 &9102353748607818247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0c2fc6d7314ab4592c1fcac4feda02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeDirection: {fileID: 8300000, guid: e6cc9a76f73501547af50fdb0ab858bb, type: 3}
+  changeDirectionClip: {fileID: 8300000, guid: e6cc9a76f73501547af50fdb0ab858bb, type: 3}
+  shootClip: {fileID: 8300000, guid: 894d50d27a2edc14181c3a3a9632a922, type: 3}
 --- !u!114 &2208920506793462302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,7 +590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a13d2ed8940e8479a637a60573afee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepVolume: 1
+  stepVolumeModifier: 1
   stepClips:
   - {fileID: 8300000, guid: 87a951d1cd59f444092012ec77d43478, type: 3}
   - {fileID: 8300000, guid: c05cc00526cb56d448505f64d23e658e, type: 3}

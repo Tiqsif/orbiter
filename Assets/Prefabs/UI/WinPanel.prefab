@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 645394575993851850}
   - component: {fileID: 8400528770665103962}
   m_Layer: 5
-  m_Name: DeathPanel
+  m_Name: WinPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DEAD
+  m_text: YOU WON
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6146719e204082942ac8ba1455349a8c, type: 2}
   m_sharedMaterial: {fileID: -7436101393046988651, guid: 6146719e204082942ac8ba1455349a8c,
