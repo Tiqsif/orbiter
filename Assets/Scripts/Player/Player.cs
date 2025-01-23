@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -22,44 +23,72 @@ public class Player : MonoBehaviour
     private float holdThreshold = 0.5f; // Seconds to qualify as a hold
     private float holdTime = 0;
 
+    private Vector3 followerPos;
+    private Vector3 followerVel = Vector3.zero;
+
     public delegate void OnPlayerShootBegin();
     public static OnPlayerShootBegin onPlayerShootBegin;
 
+    PlayerInputActions playerInputActions;
     private void OnEnable()
     {
         ArcManager.onPlayerHit += OnPlayerHit;
         RiskBar.onRiskBarFull += OnRiskBarFull;
+
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Enable();
+        playerInputActions.Player.Tap.performed += ExecuteTap;
+        playerInputActions.Player.Hold.performed += ExecuteHold;
     }
 
     private void OnDisable()
     {
         ArcManager.onPlayerHit -= OnPlayerHit;
         RiskBar.onRiskBarFull -= OnRiskBarFull;
+
+        playerInputActions.Player.Disable();
+        playerInputActions.Player.Tap.performed -= ExecuteTap;
+        playerInputActions.Player.Hold.performed -= ExecuteHold;
+
     }
     private void Awake()
     {
         playerFX = GetComponent<PlayerFX>();
         playerSFX = GetComponent<PlayerSFX>();
-
         //Application.targetFrameRate = 30;
         
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(followerPos, 0.2f);
     }
     private void Start()
     {
         rotatePoint = rotateAround ? rotateAround.position : Vector3.zero;
         transform.position = rotatePoint - Vector3.forward * rotateRadius;
+        followerPos = transform.position;
         StartCoroutine(TiltRoutine());
     }
 
     private void Update()
     {
-        if (isDead) return;
+        if (isDead)
+        {
+            playerInputActions.Player.Disable();
+            return;
+        }
+
+
+
+        /*
         CheckHold();
         CheckTap();
         CheckRelease();
+        */
+        //Debug.DrawLine(rotatePoint, FindObjectOfType<ArcManager>().GetPositionFromAngle(GetPredictedAngle(0.25f)), Color.cyan);
 
-        Debug.DrawLine(rotatePoint, FindObjectOfType<ArcManager>().GetPositionFromAngle(GetPredictedAngle(0.25f)), Color.cyan);
-        
     }
     void FixedUpdate()
     {
@@ -71,9 +100,12 @@ public class Player : MonoBehaviour
         //transform.RotateAround(rotatePoint, Vector3.up, angularVelocity * Time.fixedDeltaTime);
         CustomRotateAround(transform, rotatePoint, Vector3.up, angleThisFrame);
         //Debug.Log(FindAnyObjectByType<ArcManager>().GetAngleFromPosition(transform.position));
+
+        UpdateFollowerPosition();
     }
 
 
+    /*
     void CheckTap()
     {
         // Check if there's at least one touch on the screen
@@ -88,8 +120,14 @@ public class Player : MonoBehaviour
                 ExecuteTap();
             }
         }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            // Backup for tap detection (useful for testing and low frame rates)
+            ExecuteTap();
+        }
     }
-    void ExecuteTap()
+    */
+    void ExecuteTap(InputAction.CallbackContext callbackContext)
     {
         holdTime = 0;
 
@@ -104,6 +142,7 @@ public class Player : MonoBehaviour
 
     }
 
+    /*
     void CheckHold()
     {
         if (Input.touchCount > 0)
@@ -119,9 +158,10 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-    void ExecuteHold()
+    */
+    void ExecuteHold(InputAction.CallbackContext callbackContext)
     {
+        //Debug.Log("Hold");
         if (canShoot)
         {
             Debug.Log("Shoot");
@@ -131,7 +171,7 @@ public class Player : MonoBehaviour
         }
 
     }
-
+    /*
     void CheckRelease()
     {
         if (Input.touchCount > 0)
@@ -143,7 +183,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+    */
     void ExecuteRelease()
     {
         holdTime = 0;
@@ -207,5 +247,18 @@ public class Player : MonoBehaviour
         Quaternion baseRotation = Quaternion.LookRotation(rotatedDirection - direction);
         Quaternion tiltRotation = Quaternion.Euler(0, 0, transform.localEulerAngles.z);
         target.rotation = baseRotation * tiltRotation ;
+    }
+
+    public Vector3 GetFollowerPosition()
+    {
+        return followerPos;
+    }
+
+    private void UpdateFollowerPosition()
+    {
+        Vector3 targetPosition = transform.position;
+
+        // Calculate the smooth movement with acceleration
+        followerPos = Vector3.SmoothDamp(followerPos, targetPosition, ref followerVel, 0.2f, 10, Time.deltaTime);
     }
 }

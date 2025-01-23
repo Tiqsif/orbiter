@@ -18,6 +18,11 @@ public class Eternatus : Boss
         base.Awake();
         animator = GetComponentInChildren<Animator>();
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        if (player && arcManager) Gizmos.DrawLine(baseEmitter.position, arcManager.GetPositionFromAngle(arcManager.GetAngleFromPosition(player.GetFollowerPosition())));
+    }
     public override IEnumerator AttackRoutine()
     {
         yield return base.AttackRoutine();
@@ -220,5 +225,10 @@ public class Eternatus : Boss
     }
 
     
-
+    public IEnumerator ProjectileInstant(int difficulty)
+    {
+        yield return null;
+        // not symmetrical
+        // one to player, one to predicted, one to followerPos, rest is random
+    }
 }

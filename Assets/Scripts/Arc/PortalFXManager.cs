@@ -5,7 +5,9 @@ using UnityEngine;
 public class PortalFXManager : MonoBehaviour
 {
     public Color[] colors;
+    public GameObject attackBeginParticlePrefab;
     private ParticleSystem ps;
+    private GameObject currentAttackBeginParticle;
     private void Awake()
     {
         ps = GetComponent<ParticleSystem>();
@@ -28,6 +30,23 @@ public class PortalFXManager : MonoBehaviour
         {
             var main = ps.main;
             main.startColor = colors[attackIndex];
+        }
+        if(attackBeginParticlePrefab != null)
+        {
+            if (currentAttackBeginParticle != null)
+            {
+                Destroy(currentAttackBeginParticle);
+            }
+            currentAttackBeginParticle = Instantiate(attackBeginParticlePrefab, transform.position, Quaternion.identity, transform);
+            currentAttackBeginParticle.transform.localScale = Vector3.one * 3f;
+            foreach (Transform child in currentAttackBeginParticle.transform)
+            {
+                var ps = child.GetComponent<ParticleSystem>();
+                var main = ps.main;
+                  
+                main.startColor = colors[attackIndex];
+                ps.Play();
+            }
         }
     }
 }

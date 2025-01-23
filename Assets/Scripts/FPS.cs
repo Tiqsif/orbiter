@@ -16,6 +16,7 @@ public class FPS : MonoBehaviour
     void Update()
     {
         // update fps text on every second
+        Application.targetFrameRate = 60;
 
         if (Time.frameCount % 60 == 0)
         {

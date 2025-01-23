@@ -63,7 +63,7 @@ public class AreaAttack : MonoBehaviour
 
     public void ActivateParticles(float arcAngle, float activeTime)
     {
-        float particleAngle = 25f;
+        float particleAngle = 15f;
         int numParticles = (int)(arcAngle / particleAngle);
         // instantiate particle prefab for every particleAngle in the arcAngle
         // starting from the direction - arcAngle / 2 to direction + arcAngle / 2

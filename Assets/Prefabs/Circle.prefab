@@ -178,6 +178,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7430979890212775946}
     m_Modifications:
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[0].r
+      value: 0.49019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[1].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[1].g
+      value: 0.24091674
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[1].r
+      value: 0.8396226
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[2].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[2].g
+      value: 0.81666666
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: colors.Array.data[2].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 62517175477309842, guid: a13c32cb766c0964ea6630af50b92e57,
+        type: 3}
+      propertyPath: attackBeginParticlePrefab
+      value: 
+      objectReference: {fileID: 6349385518490723294, guid: 25cbbe9d5ea5a3744a0ca9848936d74a,
+        type: 3}
     - target: {fileID: 4617036660772024948, guid: a13c32cb766c0964ea6630af50b92e57,
         type: 3}
       propertyPath: m_Name
