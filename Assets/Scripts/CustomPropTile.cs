@@ -33,6 +33,7 @@ public class CustomPropTile : MonoBehaviour
                 tile.transform.localScale = tileScaler; // change the size of the tile
                 // set the position of the tile considering the new size
                 tile.transform.localPosition = new Vector3(x * cellScale.x * tileScaler.x, 0, z * cellScale.z * tileScaler.z) + offset;
+                tile.isStatic = true;
             }
         }
 

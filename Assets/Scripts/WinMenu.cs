@@ -6,12 +6,17 @@ using UnityEngine;
 public class WinMenu : MonoBehaviour
 {
     public RectTransform panel;
+    public RectTransform button;
     private bool isOn = false;
     private float waitTime = 1f;
 
     private void Start()
     {
         Time.timeScale = 1f;
+        if (isOn)
+        {
+
+        }
     }
     private void OnEnable()
     {
@@ -26,13 +31,30 @@ public class WinMenu : MonoBehaviour
     private void OnBossDie()
     {
         panel.gameObject.SetActive(true);
+        button.gameObject.SetActive(false);
         isOn = true;
-        Time.timeScale = 0.01f;
+        Invoke("SetInputAvailable", waitTime);
 
+    }
+
+    private void SetInputAvailable()
+    {
+        button.gameObject.SetActive(true);
+        
+    }
+
+
+    public void OnRestartButtonClicked()
+    {
+        button.gameObject.SetActive(false);
+        panel.gameObject.SetActive(false);
+        isOn = false;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     private void Update()
     {
+        /*
         if (!isOn) return;
         waitTime -= Time.deltaTime / Time.timeScale;
         waitTime = Mathf.Max(waitTime, 0);
@@ -49,6 +71,7 @@ public class WinMenu : MonoBehaviour
 
             }
         }
+        */
     }
 }
 

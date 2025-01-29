@@ -6,6 +6,7 @@ public class PortalFXManager : MonoBehaviour
 {
     public Color[] colors;
     public GameObject attackBeginParticlePrefab;
+    public AudioClip attackBeginClip;
     private ParticleSystem ps;
     private GameObject currentAttackBeginParticle;
     private void Awake()
@@ -25,11 +26,16 @@ public class PortalFXManager : MonoBehaviour
 
     private void OnBossAttack(int attackIndex)
     {
-        Debug.Log("OnBossAttack: " + attackIndex);
+        //Debug.Log("OnBossAttack: " + attackIndex);
         if (attackIndex < colors.Length)
         {
             var main = ps.main;
             main.startColor = colors[attackIndex];
+        }
+        else
+        {
+            //Debug.LogWarning("attackIndex out of range: " + attackIndex);
+            return;
         }
         if(attackBeginParticlePrefab != null)
         {
@@ -46,6 +52,12 @@ public class PortalFXManager : MonoBehaviour
                   
                 main.startColor = colors[attackIndex];
                 ps.Play();
+            }
+
+            if (attackBeginClip != null)
+            {
+                AudioManager.Instance.KillSFX(attackBeginClip);
+                AudioManager.Instance.PlaySFX(attackBeginClip, 0.6f);
             }
         }
     }

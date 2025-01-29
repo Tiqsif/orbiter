@@ -142,7 +142,11 @@ public class Boss : MonoBehaviour
 
     public virtual void ChangeState(BossState newState)
     {
-        if(player.isDead) return;
+        if (player.isDead)
+        {
+            //Debug.Log("Boss:PlayerisdeadReturn");
+            return;
+        }
         previousState = currentState;
         currentState = newState;
         switch (newState)
@@ -168,4 +172,6 @@ public class Boss : MonoBehaviour
         TakeDamage(10);
         
     }
+
+   
 }

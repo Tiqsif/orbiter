@@ -20,8 +20,8 @@ public class Player : MonoBehaviour
     public bool isDead = false;
     public bool canShoot = false;
 
-    private float holdThreshold = 0.5f; // Seconds to qualify as a hold
-    private float holdTime = 0;
+    //private float holdThreshold = 0.5f; // Seconds to qualify as a hold
+    //private float holdTime = 0;
 
     private Vector3 followerPos;
     private Vector3 followerVel = Vector3.zero;
@@ -129,12 +129,12 @@ public class Player : MonoBehaviour
     */
     void ExecuteTap(InputAction.CallbackContext callbackContext)
     {
-        holdTime = 0;
+        //holdTime = 0;
 
         //Debug.Log("Touch began at position: " + touch.position);
         isClockwise = !isClockwise;
         //model.Rotate(0, 180, 0);
-        Debug.Log($"Direction changed to: {(isClockwise ? "Clockwise" : "Counterclockwise")}");
+        //Debug.Log($"Direction changed to: {(isClockwise ? "Clockwise" : "Counterclockwise")}");
         playerFX.PlayDirtBurst();
         playerSFX.PlayChangeDirection();
         StopAllCoroutines();
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
         //Debug.Log("Hold");
         if (canShoot)
         {
-            Debug.Log("Shoot");
+            //Debug.Log("Shoot");
             onPlayerShootBegin?.Invoke();
             playerSFX.PlayShoot();
             canShoot = false;
@@ -186,7 +186,7 @@ public class Player : MonoBehaviour
     */
     void ExecuteRelease()
     {
-        holdTime = 0;
+        //holdTime = 0;
     }
     IEnumerator TiltRoutine()
     {
@@ -261,4 +261,33 @@ public class Player : MonoBehaviour
         // Calculate the smooth movement with acceleration
         followerPos = Vector3.SmoothDamp(followerPos, targetPosition, ref followerVel, 0.2f, 10, Time.deltaTime);
     }
+
+    /*
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// Disables rendering debug manager in Unity Editor
+    /// https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@14.0/manual/Render-Pipeline-Debug-Window.html#how-to-access-the-rendering-debugger
+    ///
+    /// <br/><br/>
+    ///
+    /// Prevent usable hotkeys from opening the rendering debug manager:
+    /// <br/>
+    /// PC: Left Ctrl + Backspace
+    /// <br/>
+    /// Gamepad: L3 + R3 (press the left and right sticks)
+    /// <br/>
+    /// Mobile: Three-finger tap
+    /// </summary>
+    /// ReSharper disable once CheckNamespace
+    public static class DisableRenderingDebugManager // renders Display Stats window
+    {
+        [UnityEditor.InitializeOnLoadMethod]
+        private static void OnEditorLoaded()
+        {
+            UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
+        }
+    }
+#endif
+    */
 }

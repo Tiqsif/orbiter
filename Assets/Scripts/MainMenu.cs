@@ -4,16 +4,9 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    private void Update()
+    public void LoadGameLevel() // button
     {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                // load next scene
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
-            }
-        }
+        Debug.Log("Loading Game Level");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

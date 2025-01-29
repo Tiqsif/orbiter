@@ -10,7 +10,7 @@ public class Eternatus : Boss
     public GameObject projectilePrefab;
     public GameObject areaAttackPrefab;
     public float projectileSpeed = 5.0f;
-
+    public AudioClip roarClip;
     private Animator animator; // temp, create a separate script for this!
     private int maxDifficulty = 20;
     protected new void Awake()
@@ -27,8 +27,10 @@ public class Eternatus : Boss
     {
         yield return base.AttackRoutine();
 
-        int attackNo =  Random.Range(0, 3);
+        int attackNo = Random.Range(0, 4);
         onBossAttack?.Invoke(attackNo);
+        AudioManager.Instance.KillSFX(roarClip);
+        AudioManager.Instance.PlaySFX(roarClip, 0f, 0.6f);
         switch (attackNo)
         {
             case 0:
@@ -39,6 +41,9 @@ public class Eternatus : Boss
                 break;
             case 2:
                 yield return StartCoroutine(AreaAttack(Mathf.Min(attackCounter, maxDifficulty)));
+                break;
+            case 3:
+                yield return StartCoroutine(ProjectileInstant(Mathf.Min(attackCounter, maxDifficulty)));
                 break;
         }
         ChangeState(BossState.Idle);
@@ -56,8 +61,8 @@ public class Eternatus : Boss
         for (int i = 0; i < n; i++)
         {
             // Trigger the attack animation and play the sound
-            animator.ResetTrigger("Attack");
-            animator.SetTrigger("Attack");
+            animator?.ResetTrigger("Attack");
+            animator?.SetTrigger("Attack");
             AudioManager.Instance.KillSFX(attackClip);
             AudioManager.Instance.PlaySFX(attackClip, 0f, 0.6f);
 
@@ -139,8 +144,8 @@ public class Eternatus : Boss
         float angleStep = 360f / n; // angle between each projectile
         angleOffset = (angleOffset + 360) % 360;
         
-        animator.ResetTrigger("Attack");
-        animator.SetTrigger("Attack");
+        animator?.ResetTrigger("Attack");
+        animator?.SetTrigger("Attack");
         AudioManager.Instance.KillSFX(attackClip);
         AudioManager.Instance.PlaySFX(attackClip, 0f, 0.6f);
         for (int i = 0; i < n; i++)
@@ -151,7 +156,7 @@ public class Eternatus : Boss
             Vector3 direction = arcManager.GetPositionFromAngle(currentAngle).normalized;
             //Debug.DrawLine(baseEmitter.position, arcManager.GetPositionFromAngle(currentAngle), Color.black, 5f);
             //Debug.Log("direction: "+ Mathf.Atan2(direction.z - arcManager.transform.position.z, direction.x- arcManager.transform.position.x) * Mathf.Rad2Deg);
-            Debug.Log("currentAngle: " + currentAngle);
+            //Debug.Log("currentAngle: " + currentAngle);
             GameObject projectile = Instantiate(projectilePrefab, baseEmitter.position, Quaternion.identity);
             projectile.transform.forward = direction.normalized;
             if (projectile.TryGetComponent(out Orb orb))
@@ -185,8 +190,8 @@ public class Eternatus : Boss
         // maybe electrify the ground or something when active
 
         yield return null;
-        animator.ResetTrigger("Attack");
-        animator.SetTrigger("Attack");
+        animator?.ResetTrigger("Attack");
+        animator?.SetTrigger("Attack");
         //Debug.Log("Animator triggered");
         
         float angleStep = 360f / n; // angle between each projectile
@@ -224,11 +229,69 @@ public class Eternatus : Boss
         yield return AreaAttack(n, angleOffset, arcAngle, waitTime, activeTime);
     }
 
+    // ---------------------------------- Projectile Instant ----------------------------------
+
+    public IEnumerator ProjectileInstant(int n, float delay)
+    {
+
+        float elapsedTime = 0f;
+        // TODO: set target to directions average
+
+
+
+        Quaternion targetRotation = Quaternion.LookRotation(arcManager.GetPositionFromAngle(arcManager.GetAngleFromPosition((player.GetFollowerPosition()))).normalized); // Target rotation for the model
+        
+
+        float angularDistance = Quaternion.Angle(model.rotation, targetRotation); // Angular distance between models current and target rotation
+        float rotationSpeed = 5 * angularDistance / delay; // v = x/t, 5 is arbitrary
+        rotationSpeed = Mathf.Lerp(rotationSpeed, rotationSpeed * 5, difficulty / maxDifficulty); // increase rotation speed with difficulty
+        while (elapsedTime < delay)
+        {
+            elapsedTime += Time.deltaTime;
+            // Smoothly rotate the model towards the target angle
+            model.rotation = Quaternion.RotateTowards(model.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            yield return null;
+        }
+
+        // Instantly shoot projectiles in the given directions
+        animator?.ResetTrigger("Attack");
+        animator?.SetTrigger("Attack");
+
+        AudioManager.Instance.KillSFX(attackClip);
+        AudioManager.Instance.PlaySFX(attackClip, 0f, 0.6f);
+        Vector3[] directions = new Vector3[n];
+        directions[0] = (player.transform.position - baseEmitter.position).normalized; // direction to player
+        directions[1] = (arcManager.GetPositionFromAngle(player.GetPredictedAngle((player.rotateRadius / projectileSpeed))) - baseEmitter.position).normalized; // direction to predicted
+        directions[2] = (player.GetFollowerPosition() - baseEmitter.position).normalized; // direction to followerPos
+        for (int i = 3; i < n; i++)
+        {
+            // random directions y = 0,
+            directions[i] = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+        }
+        for (int i = 0; i < directions.Length; i++)
+        {
+            GameObject projectile = Instantiate(projectilePrefab, baseEmitter.position, Quaternion.identity);
+            projectile.transform.forward = directions[i].normalized;
+            if (projectile.TryGetComponent(out Orb orb))
+            {
+                orb.Launch(directions[i] * projectileSpeed);
+                orb.CreateIndicator();
+            }
+            Debug.DrawLine(baseEmitter.position, baseEmitter.position + directions[i].normalized * 2, Color.red, 5f);
+        }
+        
+        yield return new WaitForSeconds(delay);
+    }
     
     public IEnumerator ProjectileInstant(int difficulty)
     {
         yield return null;
         // not symmetrical
         // one to player, one to predicted, one to followerPos, rest is random
+        int n = Mathf.Clamp(3 + difficulty / 5, 2, 5);
+        float delay = Mathf.Lerp(0.5f, 1.5f, 1f - difficulty / maxDifficulty);
+        
+
+        yield return ProjectileInstant(n, delay);
     }
 }

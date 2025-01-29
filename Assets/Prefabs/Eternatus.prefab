@@ -127,6 +127,7 @@ MonoBehaviour:
   areaAttackPrefab: {fileID: 6146401734833961241, guid: 06525dffa332e2d42a5412e191ae9a84,
     type: 3}
   projectileSpeed: 12
+  roarClip: {fileID: 8300000, guid: be88ace7fc7f74c4c8bd7e05569cbaa4, type: 3}
 --- !u!1001 &6896773069476466506
 PrefabInstance:
   m_ObjectHideFlags: 0
