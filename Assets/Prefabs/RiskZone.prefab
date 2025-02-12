@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36cd13ad9bacfcd45a9bec70dcef9fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 6b77f8c44cf47c641a278dd7f417a300, type: 2}
-  segments: 5
-  width: 0.5
+  _material: {fileID: 2100000, guid: 6b77f8c44cf47c641a278dd7f417a300, type: 2}
+  _segments: 5
+  _width: 0.5
+  arcAngle: 0
+  direction: {x: 0, y: 0, z: 0}

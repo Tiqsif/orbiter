@@ -6,15 +6,15 @@ using UnityEngine;
 
 public class ArcManager : MonoBehaviour
 {
-    public Transform player;
-    public float circleRadius = 10;
+    [SerializeField] private Transform _player;
+    public float circleRadius = 12.5f;
 
 
     public delegate void OnPlayerHit();
     public static OnPlayerHit onPlayerHit;
 
 
-    public GameObject riskZonePrefab;
+    [SerializeField] private GameObject _riskZonePrefab;
     private List<RiskZone> riskZones = new List<RiskZone>();
 
     public delegate void OnRiskZoneHit();
@@ -23,9 +23,9 @@ public class ArcManager : MonoBehaviour
     private void Awake()
     {
         Orb.OnOrbArrived +=OnOrbArrived;
-        player = player? player : GameObject.FindWithTag("Player").transform;
+        _player = _player? _player : GameObject.FindWithTag("Player").transform;
 
-        if (player.TryGetComponent(out Player movement)) movement.rotateAround = transform; movement.rotateRadius = circleRadius;
+        if (_player.TryGetComponent(out Player movement)) movement.SetRotateValues(transform, circleRadius);
     }
     private void OnDestroy()
     {
@@ -75,7 +75,7 @@ public class ArcManager : MonoBehaviour
 
         // Calculate angles to projectile and player
         float angleToProjectile = Mathf.Atan2(orb.transform.position.z - transform.position.z, orb.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
-        float angleToPlayer = Mathf.Atan2(player.position.z - transform.position.z, player.position.x - transform.position.x) * Mathf.Rad2Deg;
+        float angleToPlayer = Mathf.Atan2(_player.position.z - transform.position.z, _player.position.x - transform.position.x) * Mathf.Rad2Deg;
 
         // Normalize angles
         angleToProjectile = (angleToProjectile + 360) % 360;
@@ -98,7 +98,7 @@ public class ArcManager : MonoBehaviour
 
         // Calculate angles to projectile and player
         float areaCenterAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-        float angleToPlayer = Mathf.Atan2(player.position.z - transform.position.z, player.position.x - transform.position.x) * Mathf.Rad2Deg;
+        float angleToPlayer = Mathf.Atan2(_player.position.z - transform.position.z, _player.position.x - transform.position.x) * Mathf.Rad2Deg;
 
         // Normalize angles
         areaCenterAngle = (areaCenterAngle + 360) % 360;
@@ -122,7 +122,7 @@ public class ArcManager : MonoBehaviour
     {
         Vector3 spawnPosition = transform.position;
         spawnPosition.y += 0.05f;
-        GameObject riskZone = Instantiate(riskZonePrefab, spawnPosition, Quaternion.identity);
+        GameObject riskZone = Instantiate(_riskZonePrefab, spawnPosition, Quaternion.identity);
         RiskZone zone = riskZone.GetComponent<RiskZone>();
         zone.Create(direction, circleRadius, arcAgle, lifetime);
         riskZones.Add(zone);
@@ -136,7 +136,7 @@ public class ArcManager : MonoBehaviour
     }
     private void CheckRiskZone()
     {
-        float angleToPlayer = Mathf.Atan2(player.position.z - transform.position.z, player.position.x - transform.position.x) * Mathf.Rad2Deg;
+        float angleToPlayer = Mathf.Atan2(_player.position.z - transform.position.z, _player.position.x - transform.position.x) * Mathf.Rad2Deg;
         //Debug.Log("ArcMan: angletoPlayer: " + angleToPlayer);
         for (int i = riskZones.Count - 1; i >= 0; i--) 
         {
@@ -148,7 +148,7 @@ public class ArcManager : MonoBehaviour
                 //Debug.DrawLine(transform.position, right, Color.red, 1f);
             if (IsWithinArc(angleToPlayer, zoneAngle, zone.arcAngle))
             {
-                Debug.DrawLine(transform.position, player.position, Color.green, 1f);
+                Debug.DrawLine(transform.position, _player.position, Color.green, 1f);
                 onRiskZoneHit?.Invoke();
                 // draw line at the left and the right of the zone
             }

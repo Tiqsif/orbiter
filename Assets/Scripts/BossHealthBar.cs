@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class BossHealthBar : MonoBehaviour
 {
-    public Image healthBar;
-    private Boss boss;
+    [SerializeField] private Image _healthBarFill;
+    private Boss _boss;
     private void Awake()
     {
-        boss = FindObjectOfType<Boss>(); // there is always only one at the moment
+        _boss = FindObjectOfType<Boss>(); // there is always only one at the moment
     }
 
     private void Update()
     {
-        healthBar.fillAmount = boss.currentHealth / boss.maxHealth;
+        _healthBarFill.fillAmount = _boss.currentHealth / _boss.maxHealth;
     }
 }

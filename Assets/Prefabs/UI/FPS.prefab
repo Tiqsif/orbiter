@@ -59,8 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 196f338a33559a44b8bd48f43debe9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fpsText: {fileID: 4841241352100259233}
-  msText: {fileID: 8873808191996308761}
+  _fpsText: {fileID: 4841241352100259233}
+  _msText: {fileID: 8873808191996308761}
 --- !u!1 &6508710587365771903
 GameObject:
   m_ObjectHideFlags: 0

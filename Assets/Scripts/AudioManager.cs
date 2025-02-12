@@ -4,11 +4,11 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     // Singleton instance
-    public float volume = 0.5f;
-    public float musicVolume = 0.05f;
-    public float ambienceVolume = 0.5f;
-    public AudioClip musicClip;
-    public AudioClip[] ambienceClips;
+    public float volume = 0.8f;
+    public float musicVolume = 0.2f;
+    public float ambienceVolume = 1f;
+    [SerializeField] private AudioClip _musicClip;
+    [SerializeField] private AudioClip[] _ambienceClips;
     private static AudioManager _instance;
 
     // Public instance to access the AudioManager
@@ -63,22 +63,22 @@ public class AudioManager : MonoBehaviour
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
     {
         // Play the music clip when a new scene is loaded
-        foreach (AudioClip ambienceClip in ambienceClips)
+        foreach (AudioClip ambienceClip in _ambienceClips)
         {
             PlayAmbience(ambienceClip, true);
         }
-        PlayMusic(musicClip, true);
+        PlayMusic(_musicClip, true);
     }
 
 
     private void Start()
     {
 #if UNITY_EDITOR
-        foreach (AudioClip ambienceClip in ambienceClips)
+        foreach (AudioClip ambienceClip in _ambienceClips)
         {
             PlayAmbience(ambienceClip, true);
         }
-        PlayMusic(musicClip, true);
+        PlayMusic(_musicClip, true);
 #endif
     }
 

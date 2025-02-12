@@ -763,8 +763,8 @@ MonoBehaviour:
   volume: 0.8
   musicVolume: 0.2
   ambienceVolume: 1
-  musicClip: {fileID: 8300000, guid: 031bbb98a7e1a3c4684afe0c45789da8, type: 3}
-  ambienceClips: []
+  _musicClip: {fileID: 8300000, guid: 031bbb98a7e1a3c4684afe0c45789da8, type: 3}
+  _ambienceClips: []
 --- !u!4 &86047266
 Transform:
   m_ObjectHideFlags: 0
@@ -15445,25 +15445,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfb04594231799d4092ee0064447ce94, type: 3}
---- !u!1 &2054658499 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2526467985652269131, guid: 28ff83e130d90994a9cfc184eb1f269d,
-    type: 3}
-  m_PrefabInstance: {fileID: 660266240710846645}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2054658503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054658499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82db7694eefec5a4a9b1e1b4ad92ea11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sphereRadius: 10
 --- !u!1 &2055967193
 GameObject:
   m_ObjectHideFlags: 0
@@ -16143,16 +16124,6 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1292759924072467537, guid: 3774363144690794ea83899627e166f8,
-        type: 3}
-      propertyPath: m_ReferenceResolution.x
-      value: 1080
-      objectReference: {fileID: 0}
-    - target: {fileID: 1292759924072467537, guid: 3774363144690794ea83899627e166f8,
-        type: 3}
-      propertyPath: m_ReferenceResolution.y
-      value: 2340
-      objectReference: {fileID: 0}
     - target: {fileID: 3289653477740178708, guid: 3774363144690794ea83899627e166f8,
         type: 3}
       propertyPath: m_Material
@@ -16213,16 +16184,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 330585545}
-    - target: {fileID: 5518860655538191397, guid: 3774363144690794ea83899627e166f8,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5518860655538191397, guid: 3774363144690794ea83899627e166f8,
-        type: 3}
-      propertyPath: m_PlaneDistance
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5659439100162284135, guid: 3774363144690794ea83899627e166f8,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -16513,14 +16474,20 @@ PrefabInstance:
       propertyPath: tiltDuration
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9102353748607818247, guid: 28ff83e130d90994a9cfc184eb1f269d,
+        type: 3}
+      propertyPath: _shootClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 894d50d27a2edc14181c3a3a9632a922, type: 3}
+    - target: {fileID: 9102353748607818247, guid: 28ff83e130d90994a9cfc184eb1f269d,
+        type: 3}
+      propertyPath: _changeDirectionClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e6cc9a76f73501547af50fdb0ab858bb, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2526467985652269131, guid: 28ff83e130d90994a9cfc184eb1f269d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2054658503}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28ff83e130d90994a9cfc184eb1f269d, type: 3}
 --- !u!1001 &1699255878914831002
 PrefabInstance:
@@ -16537,9 +16504,20 @@ PrefabInstance:
       objectReference: {fileID: 1575614590}
     - target: {fileID: 179773101557068435, guid: ee7641d6c3caaef4797bfb18f052b113,
         type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1575614590}
+    - target: {fileID: 179773101557068435, guid: ee7641d6c3caaef4797bfb18f052b113,
+        type: 3}
       propertyPath: circleRadius
       value: 12.5
       objectReference: {fileID: 0}
+    - target: {fileID: 179773101557068435, guid: ee7641d6c3caaef4797bfb18f052b113,
+        type: 3}
+      propertyPath: _riskZonePrefab
+      value: 
+      objectReference: {fileID: 6683082796326445741, guid: 39d551f3b456a7c46a16ffbb403ec513,
+        type: 3}
     - target: {fileID: 299926245733651246, guid: ee7641d6c3caaef4797bfb18f052b113,
         type: 3}
       propertyPath: m_Name
@@ -17264,6 +17242,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 330585546}
+  - {fileID: 86047266}
   - {fileID: 832575519}
   - {fileID: 410087041}
   - {fileID: 1536612582}
@@ -17273,7 +17252,6 @@ SceneRoots:
   - {fileID: 660266240710846645}
   - {fileID: 6418028241162197407}
   - {fileID: 1699255878914831002}
-  - {fileID: 86047266}
   - {fileID: 589251513117727285}
   - {fileID: 330467242}
   - {fileID: 1961188602}

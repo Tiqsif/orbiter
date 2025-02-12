@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;
+    private TextMeshProUGUI _scoreText;
 
 
     private void Awake()
     {
-        scoreText = GetComponent<TextMeshProUGUI>();
-        scoreText.text = "0";
+        _scoreText = GetComponent<TextMeshProUGUI>();
+        _scoreText.text = "0";
     }
     private void OnEnable()
     {
@@ -25,6 +25,6 @@ public class Score : MonoBehaviour
 
     private void UpdateScore(int attackCounter)
     {
-        scoreText.text = attackCounter.ToString();
+        _scoreText.text = attackCounter.ToString();
     }
 }

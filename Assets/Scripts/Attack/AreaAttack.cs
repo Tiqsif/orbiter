@@ -4,36 +4,36 @@ using UnityEngine;
 
 public class AreaAttack : MonoBehaviour
 {
-    public AudioClip blipClip;
-    public AudioClip particleClip;
-    public GameObject particlePrefab;
-    public Material materialWhite;
-    public Material materialAttack;
-    protected Vector3 direction;
-    protected bool hasIndicator = false;
-    protected AreaIndicator indicator;
-    private ArcManager arcManager;
-    private GameObject particleHolder;
-    private AudioSource source;
+    [SerializeField] private AudioClip _blipClip;
+    [SerializeField] private AudioClip _particleClip;
+    [SerializeField] private GameObject _particlePrefab;
+    [SerializeField] private Material _materialWhite;
+    [SerializeField] private Material _materialAttack;
+    protected Vector3 _direction;
+    protected bool _hasIndicator = false;
+    protected AreaIndicator _indicator;
+    private ArcManager _arcManager;
+    private GameObject _particleHolder;
+    private AudioSource _source;
     private void Awake()
     {
-        arcManager = FindObjectOfType<ArcManager>();
-        materialWhite = new Material(materialWhite);
-        materialAttack = new Material(materialAttack);
+        _arcManager = FindObjectOfType<ArcManager>();
+        _materialWhite = new Material(_materialWhite);
+        _materialAttack = new Material(_materialAttack);
 
     }
     public void Activate(Vector3 direction, float arcAngle, float waitTime, float activeTime)
     {
-        this.direction = direction;
+        this._direction = direction;
         
-        hasIndicator = true;
+        _hasIndicator = true;
 
         GameObject indicatorObj = new GameObject("Indicator");
-        indicator = indicatorObj.AddComponent<AreaIndicator>();
-        indicator.materialWhite = materialWhite;
-        indicator.materialAttack = materialAttack;
-        indicator.blipClip = blipClip;
-        indicator.Create(arcManager, direction, arcAngle);
+        _indicator = indicatorObj.AddComponent<AreaIndicator>();
+        _indicator.materialWhite = _materialWhite;
+        _indicator.materialAttack = _materialAttack;
+        _indicator.blipClip = _blipClip;
+        _indicator.Create(_arcManager, direction, arcAngle);
         StartCoroutine(ActivateRoutine(arcAngle, waitTime, activeTime));
 
     }
@@ -41,21 +41,21 @@ public class AreaAttack : MonoBehaviour
     private IEnumerator ActivateRoutine(float arcAngle, float waitTime, float activeTime)
     {
         // create a visual indicator for the orb
-        yield return StartCoroutine(indicator.FlashRoutine(waitTime));
+        yield return StartCoroutine(_indicator.FlashRoutine(waitTime));
 
-        arcManager.CreateRiskZone(direction, arcAngle+30, activeTime);
+        _arcManager.CreateRiskZone(_direction, arcAngle+30, activeTime);
 
-        indicator.HitMode();
+        _indicator.HitMode();
         ActivateParticles(arcAngle, activeTime);
         float elepsedTime = 0;
         while (elepsedTime < activeTime)
         {
-            arcManager.CheckAreaHit(direction, arcAngle);
+            _arcManager.CheckAreaHit(_direction, arcAngle);
             elepsedTime += Time.deltaTime;
             yield return null;
         }
 
-        Destroy(source.gameObject);
+        Destroy(_source.gameObject);
         ClearIndicator();
         ClearParticles();
         Destroy(this.gameObject);
@@ -69,34 +69,34 @@ public class AreaAttack : MonoBehaviour
         // starting from the direction - arcAngle / 2 to direction + arcAngle / 2
         for (int i = 0; i < numParticles; i++)
         {
-            Vector3 particleDirection = Quaternion.Euler(0, (-arcAngle / 2) + i * particleAngle + particleAngle/2, 0) * direction;
-            GameObject particle = Instantiate(particlePrefab, arcManager.transform.position, Quaternion.identity);
-            if (particleHolder == null)
+            Vector3 particleDirection = Quaternion.Euler(0, (-arcAngle / 2) + i * particleAngle + particleAngle/2, 0) * _direction;
+            GameObject particle = Instantiate(_particlePrefab, _arcManager.transform.position, Quaternion.identity);
+            if (_particleHolder == null)
             {
-                particleHolder = new GameObject("ParticleHolder");
-                particleHolder.transform.parent = this.transform;
+                _particleHolder = new GameObject("ParticleHolder");
+                _particleHolder.transform.parent = this.transform;
             }
-            particle.transform.parent = particleHolder.transform;
+            particle.transform.parent = _particleHolder.transform;
             // apply the particledirection to the particle
             
             particle.transform.forward = particleDirection;
         }
 
-        source = AudioManager.Instance.PlaySFX(particleClip, loop:true);
-        source.pitch += Random.Range(0.3f,0.5f);
-        source.loop = true;
+        _source = AudioManager.Instance.PlaySFX(_particleClip, loop:true);
+        _source.pitch += Random.Range(0.3f,0.5f);
+        _source.loop = true;
 
     }
 
     public void ClearParticles()
     {
-        Destroy(particleHolder);
+        Destroy(_particleHolder);
     }
 
     public void ClearIndicator()
     {
-        hasIndicator = false;
+        _hasIndicator = false;
         // destroy the visual indicator maybe with an effect
-        Destroy(indicator.gameObject);
+        Destroy(_indicator.gameObject);
     }
 }

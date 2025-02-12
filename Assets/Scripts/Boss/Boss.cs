@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    public int difficulty;
-    public int attackCounter = 0;
+    [SerializeField] protected int _difficulty;
+    [SerializeField] protected int _attackCounter = 0;
     public float maxHealth;
     public float currentHealth;
-    public Transform model;
+    [SerializeField] protected Transform _model;
 
-    public AudioClip spawnClip;
-    public AudioClip idleClip;
-    public AudioClip deathClip;
-    public AudioClip attackClip;
-    protected ArcManager arcManager;
-    public BossState currentState;
-    [HideInInspector] public BossState previousState;
+    [SerializeField] protected AudioClip _spawnClip;
+    [SerializeField] protected AudioClip _idleClip;
+    [SerializeField] protected AudioClip _deathClip;
+    [SerializeField] protected AudioClip _attackClip;
+    protected ArcManager _arcManager;
+    [SerializeField] protected BossState _currentState;
+    protected BossState _previousState;
 
-    public float spawnSpeed = 1.0f;
+    [SerializeField] protected float _spawnSpeed = 1.0f;
 
-    protected Player player;
+    protected Player _player;
     public delegate void OnAttackCounterChange(int attackCounter);
     public static OnAttackCounterChange onAttackCounterChange;
 
@@ -54,8 +54,8 @@ public class Boss : MonoBehaviour
     }
     protected void Start()
     {
-        arcManager = FindObjectOfType<ArcManager>();
-        player = FindObjectOfType<Player>();
+        _arcManager = FindObjectOfType<ArcManager>();
+        _player = FindObjectOfType<Player>();
         ChangeState(BossState.Spawn);
     }
     protected void Update()
@@ -64,23 +64,23 @@ public class Boss : MonoBehaviour
     }
 
 
-    public virtual void Spawn()
+    protected virtual void Spawn()
     {
         //Debug.Log("Boss Spawn");
 
-        AudioManager.Instance.KillSFX(spawnClip);
-        AudioManager.Instance.PlaySFX(spawnClip, 0f, 0.75f);
+        AudioManager.Instance.KillSFX(_spawnClip);
+        AudioManager.Instance.PlaySFX(_spawnClip, 0f, 0.75f);
         StartCoroutine(SpawnRoutine());
         
     }
-    public virtual IEnumerator SpawnRoutine()
+    protected virtual IEnumerator SpawnRoutine()
     {
         Vector3 targetPosition = transform.position;
         Vector3 startPosition = new Vector3(targetPosition.x, targetPosition.y - 10, targetPosition.z);
         float spawnPercent = 0;
         while (spawnPercent < 1)
         {
-            spawnPercent += Time.deltaTime * spawnSpeed;
+            spawnPercent += Time.deltaTime * _spawnSpeed;
             float curvePercent = 1 - Mathf.Cos(spawnPercent * Mathf.PI * 0.5f);
             transform.position = Vector3.Lerp(startPosition, targetPosition, curvePercent);
             yield return null;
@@ -88,50 +88,50 @@ public class Boss : MonoBehaviour
         transform.position = targetPosition;
         ChangeState(BossState.Idle);
     }
-    public virtual void Die()
+    protected virtual void Die()
     {
         //Debug.Log("Boss Die");
         StartCoroutine(DieRoutine());
     }
 
-    public virtual IEnumerator DieRoutine()
+    protected virtual IEnumerator DieRoutine()
     {
         yield return null;
-        if (deathClip)
+        if (_deathClip)
         {
-            AudioManager.Instance.KillSFX(deathClip);
-            AudioManager.Instance.PlaySFX(deathClip);
+            AudioManager.Instance.KillSFX(_deathClip);
+            AudioManager.Instance.PlaySFX(_deathClip);
         }
         yield return null;
         onBossDie?.Invoke();
     }
-    public virtual void Idle()
+    protected virtual void Idle()
     {
         //Debug.Log("Boss Idle");
         StartCoroutine(IdleRoutine());
     }
 
-    public virtual IEnumerator IdleRoutine()
+    protected virtual IEnumerator IdleRoutine()
     {
         yield return null;
         yield return new WaitForSeconds(2f);
         ChangeState(BossState.Attack);
     }
 
-    public virtual void Attack()
+    protected virtual void Attack()
     {
         //Debug.Log("Boss Attack");
-        attackCounter ++;
-        onAttackCounterChange?.Invoke(attackCounter);
+        _attackCounter ++;
+        onAttackCounterChange?.Invoke(_attackCounter);
         StartCoroutine(AttackRoutine());
     }
 
-    public virtual IEnumerator AttackRoutine()
+    protected virtual IEnumerator AttackRoutine()
     {
         yield return null;
     }
 
-    public virtual void TakeDamage(float damage)
+    protected virtual void TakeDamage(float damage)
     {
         currentHealth -= damage;
         if (currentHealth <= 0)
@@ -140,15 +140,15 @@ public class Boss : MonoBehaviour
         }
     }
 
-    public virtual void ChangeState(BossState newState)
+    protected virtual void ChangeState(BossState newState)
     {
-        if (player.isDead)
+        if (_player.isDead)
         {
             //Debug.Log("Boss:PlayerisdeadReturn");
             return;
         }
-        previousState = currentState;
-        currentState = newState;
+        _previousState = _currentState;
+        _currentState = newState;
         switch (newState)
         {
             case BossState.Spawn:
@@ -166,10 +166,10 @@ public class Boss : MonoBehaviour
         }
     }
 
-    public virtual void OnPlayerShootBegin()
+    protected virtual void OnPlayerShootBegin(float damage)
     {
         
-        TakeDamage(10);
+        TakeDamage(damage);
         
     }
 

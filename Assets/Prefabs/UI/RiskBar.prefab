@@ -14982,13 +14982,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e2bf18041c7f64459498403a69bef11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRisk: 100
-  currentRisk: 0
-  riskIncrease: 3
-  riskBar: {fileID: 6495421685486790547}
-  frame: {fileID: 4690117319573046082}
-  fullParticle: {fileID: 8110208332139619400}
-  shootParticle: {fileID: 8868960911359065417}
+  _maxRisk: 100
+  _currentRisk: 0
+  _riskIncrease: 2.5
+  _riskBarFill: {fileID: 6495421685486790547}
+  _barFrame: {fileID: 4690117319573046082}
+  _fullParticle: {fileID: 8110208332139619400}
+  _shootParticle: {fileID: 8868960911359065417}
 --- !u!1 &8625440990298657736
 GameObject:
   m_ObjectHideFlags: 0
@@ -15035,7 +15035,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8625440990298657736}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 3
   stopAction: 0
   cullingMode: 0
@@ -15110,7 +15110,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.25
       minScalar: 5
       maxCurve:
         serializedVersion: 2

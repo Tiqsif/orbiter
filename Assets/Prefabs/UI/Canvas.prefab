@@ -55,9 +55,9 @@ Canvas:
   m_GameObject: {fileID: 7117791709375629489}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 2340}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7714d30858406479b9de2f7149f52b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 2210646239744147923}
-  button: {fileID: 8035655704035792997}
+  _panel: {fileID: 2210646239744147923}
+  _button: {fileID: 8035655704035792997}
 --- !u!114 &1249247618250585502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,8 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c33d3a54ff9c948b08378c0b9ff71f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 6915527343338865395}
-  button: {fileID: 6623261443216766703}
+  _panel: {fileID: 6915527343338865395}
+  _button: {fileID: 6623261443216766703}
 --- !u!1001 &1458008680092565840
 PrefabInstance:
   m_ObjectHideFlags: 0

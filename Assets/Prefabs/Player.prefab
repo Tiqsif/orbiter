@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 3996709247418766281}
   - component: {fileID: 9102353748607818247}
   - component: {fileID: 2208920506793462302}
+  - component: {fileID: 6727689679138240460}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -168,15 +169,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e6f5b94b07eeb478ba049d2cd67a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateAround: {fileID: 0}
+  _rotateAround: {fileID: 0}
   speed: 3
-  angularVelocity: 0
-  rotateRadius: 10
-  tiltAngle: -15
-  tiltDuration: 2
-  model: {fileID: 9187315852949739026}
-  isDead: 0
-  canShoot: 0
+  rotateRadius: 12.5
 --- !u!114 &9102353748607818247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,8 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0c2fc6d7314ab4592c1fcac4feda02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeDirectionClip: {fileID: 8300000, guid: e6cc9a76f73501547af50fdb0ab858bb, type: 3}
-  shootClip: {fileID: 8300000, guid: 894d50d27a2edc14181c3a3a9632a922, type: 3}
+  _changeDirectionClip: {fileID: 8300000, guid: e6cc9a76f73501547af50fdb0ab858bb,
+    type: 3}
+  _shootClip: {fileID: 8300000, guid: 894d50d27a2edc14181c3a3a9632a922, type: 3}
 --- !u!114 &2208920506793462302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,8 +199,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297a4e9c1c8d4884e8c7230c2326d441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dustEmitPoint: {fileID: 1065440573652413469}
-  dirtBurst: {fileID: 191114, guid: 5b548eaf52dd0234e95d15b8da615477, type: 3}
+  _dustEmitPoint: {fileID: 1065440573652413469}
+  _dirtBurstPrefab: {fileID: 191114, guid: 5b548eaf52dd0234e95d15b8da615477, type: 3}
+--- !u!114 &6727689679138240460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2526467985652269131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82db7694eefec5a4a9b1e1b4ad92ea11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sphereRadius: 10
 --- !u!1 &6095376443644196560
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +472,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7918335002988649766, guid: a0fa675edd33ee84da40bbc2aacd9f5c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -3496841630401308749, guid: a0fa675edd33ee84da40bbc2aacd9f5c,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -590,8 +604,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a13d2ed8940e8479a637a60573afee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepVolumeModifier: 1
-  stepClips:
+  _stepVolumeModifier: 1
+  _stepClips:
   - {fileID: 8300000, guid: 87a951d1cd59f444092012ec77d43478, type: 3}
   - {fileID: 8300000, guid: c05cc00526cb56d448505f64d23e658e, type: 3}
 --- !u!4 &9187315852949739026 stripped

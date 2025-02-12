@@ -7,60 +7,60 @@ public class AreaIndicator : MonoBehaviour
 {
     public AudioClip blipClip;
     // mesh 0
-    public Mesh mesh;
+    private Mesh _mesh;
     public Material materialWhite; 
     public Material materialAttack;
 
-    public MeshRenderer meshRenderer;
-    public MeshFilter meshFilter;
+    private MeshRenderer _meshRenderer;
+    private MeshFilter _meshFilter;
 
     
 
-    public int segments = 10;
+    private int _segments = 10;
 
-    private float angle;
-    private float width;
+    private float _angle;
+    private float _width;
 
-    private float pitchChange = 0.2f;
-    private int flashCount = 4;
+    private float _pitchChange = 0.2f;
+    private int _flashCount = 4;
 
-    private ArcManager arcManager;
+    private ArcManager _arcManager;
     public void Create(ArcManager arcManager, Vector3 direction, float width)
     {
-        this.arcManager = arcManager;
-        this.width = width;
+        this._arcManager = arcManager;
+        this._width = width;
 
         // create mesh. first vertex is the center of the circle, the rest are on the circle
 
-        mesh = new Mesh();
+        _mesh = new Mesh();
         GameObject indicator = new GameObject("IndicatorMesh");
         indicator.layer = LayerMask.NameToLayer("Indicator");
         indicator.tag = "Indicator";
         indicator.transform.parent = this.transform;
-        meshFilter = indicator.AddComponent<MeshFilter>();
-        meshRenderer = indicator.AddComponent<MeshRenderer>();
-        meshFilter.mesh = mesh;
+        _meshFilter = indicator.AddComponent<MeshFilter>();
+        _meshRenderer = indicator.AddComponent<MeshRenderer>();
+        _meshFilter.mesh = _mesh;
 
 
         // caclulate angle from just direction
-        angle = Mathf.Atan2(direction.normalized.z, direction.normalized.x) * Mathf.Rad2Deg;
+        _angle = Mathf.Atan2(direction.normalized.z, direction.normalized.x) * Mathf.Rad2Deg;
         
 
         // ------------------------------------- MESH -----------------------------------------------------
 
-        Vector3[] vertices = new Vector3[segments + 2];
-        int[] triangles = new int[segments * 3];
+        Vector3[] vertices = new Vector3[_segments + 2];
+        int[] triangles = new int[_segments * 3];
 
 
         vertices[0] = arcManager.transform.position; // circles center
 
         float radius = arcManager.circleRadius;
         float len = width; // angle of the arc
-        float angleStep = len / segments; // angle between each vertex
-        float startAngle = angle - len / 2;
+        float angleStep = len / _segments; // angle between each vertex
+        float startAngle = _angle - len / 2;
 
         // loop to create vertices along the arc
-        for (int i = 0; i <= segments; i++)
+        for (int i = 0; i <= _segments; i++)
         {
             float angle = startAngle + angleStep * i;
             float radian = angle * Mathf.Deg2Rad;
@@ -70,7 +70,7 @@ public class AreaIndicator : MonoBehaviour
         }
 
         // loop to create triangles
-        for (int i = 0; i < segments; i++)
+        for (int i = 0; i < _segments; i++)
         {
             triangles[i * 3] = 0;
             triangles[i * 3 + 1] = i + 2;
@@ -78,13 +78,13 @@ public class AreaIndicator : MonoBehaviour
         }
 
         // Set mesh properties
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
+        _mesh.vertices = vertices;
+        _mesh.triangles = triangles;
+        _mesh.RecalculateNormals();
 
-        meshFilter.mesh = mesh;
+        _meshFilter.mesh = _mesh;
 
-        meshRenderer.material = materialWhite;
+        _meshRenderer.material = materialWhite;
 
         
 
@@ -96,10 +96,10 @@ public class AreaIndicator : MonoBehaviour
     {
         float startAlpha = materialWhite.color.a;
         // flash flashCount times
-        for (int i = 0; i < flashCount; i++)
+        for (int i = 0; i < _flashCount; i++)
         {
-            yield return StartCoroutine(FadeAlpha(0f, (duration / flashCount) / 2));
-            yield return StartCoroutine(FadeAlpha(startAlpha, (duration / flashCount) / 2));
+            yield return StartCoroutine(FadeAlpha(0f, (duration / _flashCount) / 2));
+            yield return StartCoroutine(FadeAlpha(startAlpha, (duration / _flashCount) / 2));
         }
 
         Color finalColor = materialWhite.color;
@@ -123,8 +123,8 @@ public class AreaIndicator : MonoBehaviour
             {
                 // change blip clips pitch a little higher through time to create a sense of urgency
                 AudioManager.Instance.KillSFX(blipClip);
-                AudioManager.Instance.PlaySFX(blipClip).pitch += pitchChange;
-                pitchChange += 0.2f;
+                AudioManager.Instance.PlaySFX(blipClip).pitch += _pitchChange;
+                _pitchChange += 0.2f;
             }
             /*
             if (newAlpha > 0.5f)
@@ -150,7 +150,7 @@ public class AreaIndicator : MonoBehaviour
 
     public void HitMode()
     {
-        meshRenderer.material = materialAttack;
+        _meshRenderer.material = materialAttack;
         // create lightning particle effect
     }
 }

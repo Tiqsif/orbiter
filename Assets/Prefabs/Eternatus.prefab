@@ -108,26 +108,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4363cf36b7a494fb591a6b7d28f3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
-  attackCounter: 0
+  _difficulty: 0
+  _attackCounter: 0
   maxHealth: 100
   currentHealth: 0
-  model: {fileID: 2652217445017741188}
-  spawnClip: {fileID: 8300000, guid: ff17a8ca619d4644aa15a57c728c044d, type: 3}
-  idleClip: {fileID: 0}
-  deathClip: {fileID: 8300000, guid: 19791bb1589f5c7479278ca3a47e914c, type: 3}
-  attackClip: {fileID: 8300000, guid: 49bee27c3d72b59499c73174df4e6fba, type: 3}
-  currentState: 0
-  previousState: 1
-  spawnSpeed: 1
-  baseEmitter: {fileID: 2013781583038574049}
-  mouthEmitter: {fileID: 6044579759696921093}
-  projectilePrefab: {fileID: 7324917099604628575, guid: 0889fd8f815f7494998715821756f0f6,
+  _model: {fileID: 2652217445017741188}
+  _spawnClip: {fileID: 8300000, guid: ff17a8ca619d4644aa15a57c728c044d, type: 3}
+  _idleClip: {fileID: 0}
+  _deathClip: {fileID: 8300000, guid: 19791bb1589f5c7479278ca3a47e914c, type: 3}
+  _attackClip: {fileID: 8300000, guid: 49bee27c3d72b59499c73174df4e6fba, type: 3}
+  _currentState: 0
+  _spawnSpeed: 1
+  _baseEmitter: {fileID: 2013781583038574049}
+  _mouthEmitter: {fileID: 6044579759696921093}
+  _projectilePrefab: {fileID: 7324917099604628575, guid: 0889fd8f815f7494998715821756f0f6,
     type: 3}
-  areaAttackPrefab: {fileID: 6146401734833961241, guid: 06525dffa332e2d42a5412e191ae9a84,
+  _areaAttackPrefab: {fileID: 6146401734833961241, guid: 06525dffa332e2d42a5412e191ae9a84,
     type: 3}
-  projectileSpeed: 12
-  roarClip: {fileID: 8300000, guid: be88ace7fc7f74c4c8bd7e05569cbaa4, type: 3}
+  _projectileSpeed: 12
+  _roarClip: {fileID: 8300000, guid: be88ace7fc7f74c4c8bd7e05569cbaa4, type: 3}
 --- !u!1001 &6896773069476466506
 PrefabInstance:
   m_ObjectHideFlags: 0

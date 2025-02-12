@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PortalFXManager : MonoBehaviour
 {
-    public Color[] colors;
-    public GameObject attackBeginParticlePrefab;
-    public AudioClip attackBeginClip;
-    private ParticleSystem ps;
-    private GameObject currentAttackBeginParticle;
+    [SerializeField] private Color[] _colors;
+    [SerializeField] private GameObject _attackBeginParticlePrefab;
+    [SerializeField] private AudioClip _attackBeginClip;
+    private ParticleSystem _ps;
+    private GameObject _currentAttackBeginParticle;
     private void Awake()
     {
-        ps = GetComponent<ParticleSystem>();
+        _ps = GetComponent<ParticleSystem>();
         
     }
     private void OnEnable()
@@ -27,37 +27,37 @@ public class PortalFXManager : MonoBehaviour
     private void OnBossAttack(int attackIndex)
     {
         //Debug.Log("OnBossAttack: " + attackIndex);
-        if (attackIndex < colors.Length)
+        if (attackIndex < _colors.Length)
         {
-            var main = ps.main;
-            main.startColor = colors[attackIndex];
+            var main = _ps.main;
+            main.startColor = _colors[attackIndex];
         }
         else
         {
             //Debug.LogWarning("attackIndex out of range: " + attackIndex);
             return;
         }
-        if(attackBeginParticlePrefab != null)
+        if(_attackBeginParticlePrefab != null)
         {
-            if (currentAttackBeginParticle != null)
+            if (_currentAttackBeginParticle != null)
             {
-                Destroy(currentAttackBeginParticle);
+                Destroy(_currentAttackBeginParticle);
             }
-            currentAttackBeginParticle = Instantiate(attackBeginParticlePrefab, transform.position, Quaternion.identity, transform);
-            currentAttackBeginParticle.transform.localScale = Vector3.one * 3f;
-            foreach (Transform child in currentAttackBeginParticle.transform)
+            _currentAttackBeginParticle = Instantiate(_attackBeginParticlePrefab, transform.position, Quaternion.identity, transform);
+            _currentAttackBeginParticle.transform.localScale = Vector3.one * 3f;
+            foreach (Transform child in _currentAttackBeginParticle.transform)
             {
                 var ps = child.GetComponent<ParticleSystem>();
                 var main = ps.main;
                   
-                main.startColor = colors[attackIndex];
+                main.startColor = _colors[attackIndex];
                 ps.Play();
             }
 
-            if (attackBeginClip != null)
+            if (_attackBeginClip != null)
             {
-                AudioManager.Instance.KillSFX(attackBeginClip);
-                AudioManager.Instance.PlaySFX(attackBeginClip, 0.6f);
+                AudioManager.Instance.KillSFX(_attackBeginClip);
+                AudioManager.Instance.PlaySFX(_attackBeginClip, 0.6f);
             }
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IndicatorRevealController : MonoBehaviour
 {
-    public float sphereRadius = 5f;
+    [SerializeField] private float _sphereRadius = 10f;
     
 
     void Update()
@@ -21,7 +21,7 @@ public class IndicatorRevealController : MonoBehaviour
                     MaterialPropertyBlock block = new MaterialPropertyBlock();
                     renderer.GetPropertyBlock(block);
                     block.SetVector("_SphereCenter", transform.position);
-                    block.SetFloat("_SphereRadius", sphereRadius);
+                    block.SetFloat("_SphereRadius", _sphereRadius);
                     renderer.SetPropertyBlock(block);
                     //Debug.Log(block.GetVector("_SphereCenter") + " " + block.GetFloat("_SphereRadius"));
 

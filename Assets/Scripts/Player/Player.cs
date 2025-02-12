@@ -5,40 +5,40 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public Transform rotateAround;
-    private Vector3 rotatePoint;
+    [SerializeField] private Transform _rotateAround;
+    private Vector3 _rotatePoint;
     [Range(1,20)] public int speed = 4;
-    [HideInInspector] public float angularVelocity;
-    public float rotateRadius = 15f;
-    public float tiltAngle = -15f;
-    public float tiltDuration = 0.5f;
-    public Transform model;
+    private float _angularVelocity;
+    public float rotateRadius = 12.5f;
+    private float _tiltAngle = -15f;
+    private float _tiltDuration = 1f;
+    private Transform _model;
 
-    private bool isClockwise = false;
-    private PlayerFX playerFX;
-    private PlayerSFX playerSFX;
-    public bool isDead = false;
-    public bool canShoot = false;
+    private bool _isClockwise = false;
+    private PlayerFX _playerFX;
+    private PlayerSFX _playerSFX;
+    public bool isDead { get; private set; }
+    private bool _canShoot = false;
 
     //private float holdThreshold = 0.5f; // Seconds to qualify as a hold
     //private float holdTime = 0;
 
-    private Vector3 followerPos;
-    private Vector3 followerVel = Vector3.zero;
+    private Vector3 _followerPos;
+    private Vector3 _followerVel = Vector3.zero;
 
-    public delegate void OnPlayerShootBegin();
+    public delegate void OnPlayerShootBegin(float damage);
     public static OnPlayerShootBegin onPlayerShootBegin;
 
-    PlayerInputActions playerInputActions;
+    PlayerInputActions _playerInputActions;
     private void OnEnable()
     {
         ArcManager.onPlayerHit += OnPlayerHit;
         RiskBar.onRiskBarFull += OnRiskBarFull;
 
-        playerInputActions = new PlayerInputActions();
-        playerInputActions.Player.Enable();
-        playerInputActions.Player.Tap.performed += ExecuteTap;
-        playerInputActions.Player.Hold.performed += ExecuteHold;
+        _playerInputActions = new PlayerInputActions();
+        _playerInputActions.Player.Enable();
+        _playerInputActions.Player.Tap.performed += ExecuteTap;
+        _playerInputActions.Player.Hold.performed += ExecuteHold;
     }
 
     private void OnDisable()
@@ -46,15 +46,15 @@ public class Player : MonoBehaviour
         ArcManager.onPlayerHit -= OnPlayerHit;
         RiskBar.onRiskBarFull -= OnRiskBarFull;
 
-        playerInputActions.Player.Disable();
-        playerInputActions.Player.Tap.performed -= ExecuteTap;
-        playerInputActions.Player.Hold.performed -= ExecuteHold;
+        _playerInputActions.Player.Disable();
+        _playerInputActions.Player.Tap.performed -= ExecuteTap;
+        _playerInputActions.Player.Hold.performed -= ExecuteHold;
 
     }
     private void Awake()
     {
-        playerFX = GetComponent<PlayerFX>();
-        playerSFX = GetComponent<PlayerSFX>();
+        _playerFX = GetComponent<PlayerFX>();
+        _playerSFX = GetComponent<PlayerSFX>();
         //Application.targetFrameRate = 30;
         
     }
@@ -62,13 +62,13 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(followerPos, 0.2f);
+        Gizmos.DrawSphere(_followerPos, 0.2f);
     }
     private void Start()
     {
-        rotatePoint = rotateAround ? rotateAround.position : Vector3.zero;
-        transform.position = rotatePoint - Vector3.forward * rotateRadius;
-        followerPos = transform.position;
+        _rotatePoint = _rotateAround ? _rotateAround.position : Vector3.zero;
+        transform.position = _rotatePoint - Vector3.forward * rotateRadius;
+        _followerPos = transform.position;
         StartCoroutine(TiltRoutine());
     }
 
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
     {
         if (isDead)
         {
-            playerInputActions.Player.Disable();
+            _playerInputActions.Player.Disable();
             return;
         }
 
@@ -93,12 +93,12 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         if (isDead) return;
-        float rotationDirection = isClockwise ? -1f : 1f;
-        angularVelocity = 25f * speed * rotationDirection;
-        float angleThisFrame = angularVelocity * Time.fixedDeltaTime;
+        float rotationDirection = _isClockwise ? -1f : 1f;
+        _angularVelocity = 25f * speed * rotationDirection;
+        float angleThisFrame = _angularVelocity * Time.fixedDeltaTime;
         //Debug.Log($"Direction: {(isClockwise ? "Clockwise" : "Counterclockwise")}, Angle: {angleThisFrame}");
         //transform.RotateAround(rotatePoint, Vector3.up, angularVelocity * Time.fixedDeltaTime);
-        CustomRotateAround(transform, rotatePoint, Vector3.up, angleThisFrame);
+        CustomRotateAround(transform, _rotatePoint, Vector3.up, angleThisFrame);
         //Debug.Log(FindAnyObjectByType<ArcManager>().GetAngleFromPosition(transform.position));
 
         UpdateFollowerPosition();
@@ -132,11 +132,11 @@ public class Player : MonoBehaviour
         //holdTime = 0;
 
         //Debug.Log("Touch began at position: " + touch.position);
-        isClockwise = !isClockwise;
+        _isClockwise = !_isClockwise;
         //model.Rotate(0, 180, 0);
         //Debug.Log($"Direction changed to: {(isClockwise ? "Clockwise" : "Counterclockwise")}");
-        playerFX.PlayDirtBurst();
-        playerSFX.PlayChangeDirection();
+        _playerFX.PlayDirtBurst();
+        _playerSFX.PlayChangeDirection();
         StopAllCoroutines();
         StartCoroutine(TiltRoutine());
 
@@ -162,12 +162,12 @@ public class Player : MonoBehaviour
     void ExecuteHold(InputAction.CallbackContext callbackContext)
     {
         //Debug.Log("Hold");
-        if (canShoot)
+        if (_canShoot)
         {
             //Debug.Log("Shoot");
-            onPlayerShootBegin?.Invoke();
-            playerSFX.PlayShoot();
-            canShoot = false;
+            onPlayerShootBegin?.Invoke(10f); // hit damage
+            _playerSFX.PlayShoot();
+            _canShoot = false;
         }
 
     }
@@ -193,9 +193,9 @@ public class Player : MonoBehaviour
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0f);
         
         float elapsedTime = 0f;
-        while (elapsedTime <= tiltDuration)
+        while (elapsedTime <= _tiltDuration)
         {
-            float angle = Mathf.Lerp(0, tiltAngle * (isClockwise ? 1:-1), elapsedTime / tiltDuration);
+            float angle = Mathf.Lerp(0, _tiltAngle * (_isClockwise ? 1:-1), elapsedTime / _tiltDuration);
             transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, angle);
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -209,14 +209,14 @@ public class Player : MonoBehaviour
 
     void OnRiskBarFull()
     {
-        canShoot = true;
+        _canShoot = true;
     }
 
     public float GetPredictedAngle(float secondsLater)
     {
-        float angleAdditional = angularVelocity * secondsLater;
+        float angleAdditional = _angularVelocity * secondsLater;
 
-        float currentAngle = Mathf.Atan2(transform.position.z - rotatePoint.z, transform.position.x - rotatePoint.x) * Mathf.Rad2Deg;
+        float currentAngle = Mathf.Atan2(transform.position.z - _rotatePoint.z, transform.position.x - _rotatePoint.x) * Mathf.Rad2Deg;
 
         currentAngle = (currentAngle + 360) % 360;
 
@@ -226,7 +226,7 @@ public class Player : MonoBehaviour
 
     }
 
-    public void CustomRotateAround(Transform target, Vector3 pivot, Vector3 axis, float angle)
+    private void CustomRotateAround(Transform target, Vector3 pivot, Vector3 axis, float angle)
     {
         // Calculate the direction from the pivot to the target
         Vector3 direction = target.position - pivot;
@@ -251,7 +251,7 @@ public class Player : MonoBehaviour
 
     public Vector3 GetFollowerPosition()
     {
-        return followerPos;
+        return _followerPos;
     }
 
     private void UpdateFollowerPosition()
@@ -259,8 +259,17 @@ public class Player : MonoBehaviour
         Vector3 targetPosition = transform.position;
 
         // Calculate the smooth movement with acceleration
-        followerPos = Vector3.SmoothDamp(followerPos, targetPosition, ref followerVel, 0.2f, 10, Time.deltaTime);
+        _followerPos = Vector3.SmoothDamp(_followerPos, targetPosition, ref _followerVel, 0.2f, 10, Time.deltaTime);
     }
+
+    public void SetRotateValues(Transform rotateAroundTransform, float rotateRadius)
+    {
+        _rotateAround = rotateAroundTransform;
+        this.rotateRadius = rotateRadius;
+        _rotatePoint = _rotateAround.position;
+    }
+
+
 
     /*
 

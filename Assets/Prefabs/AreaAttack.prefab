@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bb732fe64130b4586c7995d592f592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blipClip: {fileID: 8300000, guid: 049d0f7e8c8190c47866361171c3d246, type: 3}
-  particleClip: {fileID: 8300000, guid: efa324a64dc141b48a98dc373fff9636, type: 3}
-  particlePrefab: {fileID: 182542, guid: df089064efba1d940885b935ef5a8090, type: 3}
-  materialWhite: {fileID: 2100000, guid: 9e2f1fe484ec0a34283e784db9a89a74, type: 2}
-  materialAttack: {fileID: 2100000, guid: 3bc96f3f95d88474b92d5504810bacd2, type: 2}
+  _blipClip: {fileID: 8300000, guid: 049d0f7e8c8190c47866361171c3d246, type: 3}
+  _particleClip: {fileID: 8300000, guid: efa324a64dc141b48a98dc373fff9636, type: 3}
+  _particlePrefab: {fileID: 182542, guid: df089064efba1d940885b935ef5a8090, type: 3}
+  _materialWhite: {fileID: 2100000, guid: 9e2f1fe484ec0a34283e784db9a89a74, type: 2}
+  _materialAttack: {fileID: 2100000, guid: 3bc96f3f95d88474b92d5504810bacd2, type: 2}

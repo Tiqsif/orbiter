@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerFX : MonoBehaviour
 {
-    public Transform dustEmitPoint;
-    public GameObject dirtBurst;
+    [SerializeField] private Transform _dustEmitPoint;
+    [SerializeField] private GameObject _dirtBurstPrefab;
 
     public void PlayDirtBurst()
     {
-        GameObject dirtBurstObj = Instantiate(dirtBurst, dustEmitPoint.position, Quaternion.LookRotation(dustEmitPoint.right), dustEmitPoint);
+        GameObject dirtBurstObj = Instantiate(_dirtBurstPrefab, _dustEmitPoint.position, Quaternion.LookRotation(_dustEmitPoint.right), _dustEmitPoint);
     }
 }
