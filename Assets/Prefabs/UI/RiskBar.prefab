@@ -14989,6 +14989,7 @@ MonoBehaviour:
   _barFrame: {fileID: 4690117319573046082}
   _fullParticle: {fileID: 8110208332139619400}
   _shootParticle: {fileID: 8868960911359065417}
+  _increaseClip: {fileID: 8300000, guid: f5e45841f622ced468491f984c0ed994, type: 3}
 --- !u!1 &8625440990298657736
 GameObject:
   m_ObjectHideFlags: 0

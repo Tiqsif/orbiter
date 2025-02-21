@@ -85,7 +85,10 @@ public class ArcManager : MonoBehaviour
         if (IsWithinArc(angleToPlayer, angleToProjectile, arcAngle))
         {
             Debug.Log("Player is within hit area!");
-            onPlayerHit?.Invoke(); // comment this for invincibility
+            if (_player.TryGetComponent(out Player movement) && !movement.isInvincible)
+            {
+                onPlayerHit?.Invoke(); // comment this for invincibility
+            }
             // Trigger hit or damage logic
         }
     }
@@ -108,7 +111,10 @@ public class ArcManager : MonoBehaviour
         if (IsWithinArc(angleToPlayer, areaCenterAngle, arcAngle))
         {
             Debug.Log("Player is within hit area!");
-            onPlayerHit?.Invoke(); // comment this for invincibility
+            if (_player.TryGetComponent(out Player movement) && !movement.isInvincible)
+            {
+                onPlayerHit?.Invoke(); // comment this for invincibility
+            }
             // Trigger hit or damage logic
         }
     }

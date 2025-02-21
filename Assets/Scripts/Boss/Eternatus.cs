@@ -27,7 +27,7 @@ public class Eternatus : Boss
     {
         yield return base.AttackRoutine();
 
-        int attackNo = Random.Range(0, 4);
+        int attackNo = 2;//Random.Range(0, 4);
         onBossAttack?.Invoke(attackNo);
         AudioManager.Instance.KillSFX(_roarClip);
         AudioManager.Instance.PlaySFX(_roarClip, 0f, 0.6f);

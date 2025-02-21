@@ -29,6 +29,9 @@ public class Boss : MonoBehaviour
 
     public delegate void OnBossDie();
     public static OnBossDie onBossDie;
+
+    public delegate void OnBossTakeDamage(float damage);
+    public static OnBossTakeDamage onBossTakeDamage;
     public enum BossState
     {
         Spawn,
@@ -134,6 +137,7 @@ public class Boss : MonoBehaviour
     protected virtual void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        onBossTakeDamage?.Invoke(damage);
         if (currentHealth <= 0)
         {
             ChangeState(BossState.Dead);

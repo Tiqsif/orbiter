@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class RiskBar : MonoBehaviour
 {
@@ -13,27 +14,51 @@ public class RiskBar : MonoBehaviour
     [SerializeField] private Image _barFrame;
     [SerializeField] private ParticleSystem _fullParticle;
     [SerializeField] private ParticleSystem _shootParticle;
+    [SerializeField] private AudioClip _increaseClip;
 
     bool isFull = false;
     Color frameStartColor;
+
+    private Tween _increaseTween;
+    private float _scaleDuration = 0.15f;
+    private Sequence _fullSequence;
+
     public delegate void OnRiskBarFull();
     public static OnRiskBarFull onRiskBarFull;
 
     private void OnEnable()
     {
         ArcManager.onRiskZoneHit += OnRiskZoneHit;
-        Player.onPlayerShootBegin += ResetRisk;
+        Player.onPlayerShootBegin += PlayerShoot;
     }
 
     private void OnDisable()
     {
         ArcManager.onRiskZoneHit -= OnRiskZoneHit;
-        Player.onPlayerShootBegin -= ResetRisk;
+        Player.onPlayerShootBegin -= PlayerShoot;
     }
 
     private void Awake()
     {
         frameStartColor = _barFrame.color;
+
+        _increaseTween = transform.DOScale(transform.localScale * 1.1f, _scaleDuration/2f)
+           .SetEase(Ease.OutQuad)
+           .SetLoops(2, LoopType.Yoyo) // expand and contract
+           .SetAutoKill(false)
+           .Pause();
+        /*
+        _shakeTween = transform.DOShakeRotation(0.1f, new Vector3(0, 0, 2), 10, 90f, false, ShakeRandomnessMode.Full)
+            .SetAutoKill(false)
+            .SetLoops(-1, LoopType.Restart)
+            .Pause();
+        */
+        _fullSequence = DOTween.Sequence()
+            .Append(transform.DOMoveX(-1, 0.2f).SetEase(Ease.InOutSine))
+            .Append(transform.DOMoveX(1, 0.2f).SetEase(Ease.InOutSine))
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetAutoKill(false)
+            .Pause();
     }
 
     private void Start()
@@ -51,15 +76,24 @@ public class RiskBar : MonoBehaviour
             onRiskBarFull?.Invoke();
         }
         SetFillAmount();
+        Invoke(nameof(BarIncreaseFX), 0.0f);
     }
 
-    public void ResetRisk(float _)
+    public void PlayerShoot(float _)
     {
+        float punchStrength = 25f;
+        float duration = 0.75f;
+        transform.DOShakePosition(duration, new Vector3(punchStrength, punchStrength, 0f), 10, 90f, false, true, ShakeRandomnessMode.Harmonic);
+        transform.DOPunchScale(Vector3.one * 0.8f, duration);
+
         _currentRisk = 0;
         isFull = false;
         _shootParticle.Play();
         SetFillAmount();
+
     }
+
+    
 
     void SetFillAmount()
     {
@@ -67,12 +101,24 @@ public class RiskBar : MonoBehaviour
         if (isFull)
         {
             _fullParticle.Play();
+            if (!_fullSequence.IsPlaying()) _fullSequence.Restart();
             //frame.color = Color.white;
         }
         else
         {
             _fullParticle.Stop();
+            _fullSequence.Restart();
+            _fullSequence.Pause();
             //frame.color = frameStartColor;
         }
+    }
+
+    private void BarIncreaseFX()
+    {
+        if (_increaseTween.IsPlaying() || isFull) return;
+
+        _increaseTween.Restart();
+        AudioManager.Instance.KillSFX(_increaseClip);
+        AudioManager.Instance.PlaySFX(_increaseClip);
     }
 }

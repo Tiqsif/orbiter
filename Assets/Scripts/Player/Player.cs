@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public bool isInvincible = false;
     [SerializeField] private Transform _rotateAround;
     private Vector3 _rotatePoint;
     [Range(1,20)] public int speed = 4;

@@ -16466,6 +16466,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
+      propertyPath: isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
+        type: 3}
       propertyPath: rotateRadius
       value: 12.5
       objectReference: {fileID: 0}

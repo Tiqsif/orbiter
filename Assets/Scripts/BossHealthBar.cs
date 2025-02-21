@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,28 @@ public class BossHealthBar : MonoBehaviour
     private void Awake()
     {
         _boss = FindObjectOfType<Boss>(); // there is always only one at the moment
+
     }
 
-    private void Update()
+    private void Start()
     {
         _healthBarFill.fillAmount = _boss.currentHealth / _boss.maxHealth;
+    }
+    private void OnEnable()
+    {
+        Boss.onBossTakeDamage += OnBossTakeDamage;
+    }
+
+    private void OnDisable()
+    {
+        Boss.onBossTakeDamage -= OnBossTakeDamage;
+    }
+
+    
+
+    private void OnBossTakeDamage(float damage)
+    {
+        _healthBarFill.fillAmount = _boss.currentHealth / _boss.maxHealth;
+        transform.DOPunchRotation(new Vector3(0, 0, 5), 0.5f, 10, 0.2f);
     }
 }
