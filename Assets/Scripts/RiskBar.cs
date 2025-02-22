@@ -14,6 +14,7 @@ public class RiskBar : MonoBehaviour
     [SerializeField] private Image _barFrame;
     [SerializeField] private ParticleSystem _fullParticle;
     [SerializeField] private ParticleSystem _shootParticle;
+    [SerializeField] private ParticleSystem _increaseParticle;
     [SerializeField] private AudioClip _increaseClip;
 
     bool isFull = false;
@@ -120,5 +121,6 @@ public class RiskBar : MonoBehaviour
         _increaseTween.Restart();
         AudioManager.Instance.KillSFX(_increaseClip);
         AudioManager.Instance.PlaySFX(_increaseClip);
+        _increaseParticle.Play();
     }
 }

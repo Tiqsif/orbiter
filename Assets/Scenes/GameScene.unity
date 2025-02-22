@@ -16124,6 +16124,11 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2135065309758431060, guid: 3774363144690794ea83899627e166f8,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: -35
+      objectReference: {fileID: 0}
     - target: {fileID: 3289653477740178708, guid: 3774363144690794ea83899627e166f8,
         type: 3}
       propertyPath: m_Material
@@ -16208,6 +16213,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 450
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375660408275439822, guid: 3774363144690794ea83899627e166f8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375660408275439822, guid: 3774363144690794ea83899627e166f8,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375660408275439822, guid: 3774363144690794ea83899627e166f8,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6381176798161973382, guid: 3774363144690794ea83899627e166f8,
         type: 3}

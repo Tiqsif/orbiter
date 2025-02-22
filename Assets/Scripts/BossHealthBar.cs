@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class BossHealthBar : MonoBehaviour
 {
     [SerializeField] private Image _healthBarFill;
+    [SerializeField] private ParticleSystem _hitParticle;
     private Boss _boss;
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class BossHealthBar : MonoBehaviour
     private void OnBossTakeDamage(float damage)
     {
         _healthBarFill.fillAmount = _boss.currentHealth / _boss.maxHealth;
-        transform.DOPunchRotation(new Vector3(0, 0, 5), 0.5f, 10, 0.2f);
+        transform.DOPunchRotation(new Vector3(0, 0, 15), 0.75f, 10, 0.2f);
+        _hitParticle.Play();
     }
 }
