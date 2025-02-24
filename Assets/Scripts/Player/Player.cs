@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public bool isInvincible = false;
     [SerializeField] private Transform _rotateAround;
+    [SerializeField] private GameObject _playerShotPrefab;
     private Vector3 _rotatePoint;
     [Range(1,20)] public int speed = 4;
     private float _angularVelocity;
@@ -166,7 +167,10 @@ public class Player : MonoBehaviour
         if (_canShoot)
         {
             //Debug.Log("Shoot");
-            onPlayerShootBegin?.Invoke(10f); // hit damage
+            float damage = 10f;
+            onPlayerShootBegin?.Invoke(damage); // no need for this damage var in begin event
+            GameObject shotObj= Instantiate(_playerShotPrefab, transform.position, Quaternion.identity);
+            shotObj.GetComponent<PlayerShot>().Shoot(damage, _rotateAround.position, 0.5f);
             _playerSFX.PlayShoot();
             _canShoot = false;
         }

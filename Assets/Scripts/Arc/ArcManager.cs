@@ -16,9 +16,15 @@ public class ArcManager : MonoBehaviour
 
     [SerializeField] private GameObject _riskZonePrefab;
     private List<RiskZone> riskZones = new List<RiskZone>();
+    private List<PlayerShot> shotsOnGround = new List<PlayerShot>();
+
+    private float _angleToPlayer;
 
     public delegate void OnRiskZoneHit();
     public static OnRiskZoneHit onRiskZoneHit;
+
+    public delegate void OnPlayerShotPickup();
+    public static OnPlayerShotPickup onPlayerShotPickup;
 
     private void Awake()
     {
@@ -33,7 +39,15 @@ public class ArcManager : MonoBehaviour
     }
     void Start()
     {
-        
+        riskZones = new List<RiskZone>();
+        shotsOnGround = new List<PlayerShot>();
+    }
+
+    private void Update()
+    {
+        if (_player) _angleToPlayer = GetAngleFromPosition(_player.position);
+
+        CheckPlayerShotsOnGround();
     }
 
     void FixedUpdate()
@@ -134,6 +148,11 @@ public class ArcManager : MonoBehaviour
         riskZones.Add(zone);
         StartCoroutine(DestroyRiskZoneAfter(zone, lifetime));
     }
+
+    public void AddPlayerShotOnGround(PlayerShot playerShot)
+    {
+        shotsOnGround.Add(playerShot);
+    }
     private IEnumerator DestroyRiskZoneAfter(RiskZone zone, float wait)
     {
         yield return new WaitForSeconds(wait);
@@ -142,7 +161,6 @@ public class ArcManager : MonoBehaviour
     }
     private void CheckRiskZone()
     {
-        float angleToPlayer = Mathf.Atan2(_player.position.z - transform.position.z, _player.position.x - transform.position.x) * Mathf.Rad2Deg;
         //Debug.Log("ArcMan: angletoPlayer: " + angleToPlayer);
         for (int i = riskZones.Count - 1; i >= 0; i--) 
         {
@@ -152,7 +170,7 @@ public class ArcManager : MonoBehaviour
                 Vector3 right = transform.position + new Vector3(Mathf.Cos((zoneAngle + zone.arcAngle / 2) * Mathf.Deg2Rad), 0, Mathf.Sin((zoneAngle + zone.arcAngle / 2) * Mathf.Deg2Rad)) * circleRadius;
                 //Debug.DrawLine(transform.position, left, Color.blue, 1f);
                 //Debug.DrawLine(transform.position, right, Color.red, 1f);
-            if (IsWithinArc(angleToPlayer, zoneAngle, zone.arcAngle))
+            if (IsWithinArc(_angleToPlayer, zoneAngle, zone.arcAngle))
             {
                 Debug.DrawLine(transform.position, _player.position, Color.green, 1f);
                 onRiskZoneHit?.Invoke();
@@ -160,6 +178,22 @@ public class ArcManager : MonoBehaviour
             }
         }
 
+    }
+
+    private void CheckPlayerShotsOnGround()
+    {
+        for (int i = shotsOnGround.Count - 1; i >= 0; i--)
+        {
+            PlayerShot shot = shotsOnGround[i];
+            float angle = GetAngleFromPosition(shot.transform.position);
+            if (IsWithinArc(angle, _angleToPlayer, 10))
+            {
+                onPlayerShotPickup?.Invoke();
+                shotsOnGround.Remove(shot);
+                Destroy(shot.gameObject);
+            }
+        }
+    
     }
 
     public Vector3 GetPositionFromAngle(float angle)

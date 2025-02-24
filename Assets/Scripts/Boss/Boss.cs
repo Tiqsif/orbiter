@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class Boss : MonoBehaviour
     [SerializeField] protected BossState _currentState;
     protected BossState _previousState;
 
-    [SerializeField] protected float _spawnSpeed = 1.0f;
+    [SerializeField] protected float _spawnDuration = 4.0f;
 
     protected Player _player;
     public delegate void OnAttackCounterChange(int attackCounter);
@@ -43,12 +44,14 @@ public class Boss : MonoBehaviour
     protected void OnEnable()
     {
         Player.onPlayerShootBegin += OnPlayerShootBegin;
+        PlayerShot.onPlayerShotArrived += OnPlayerShotArrived;
     }
 
     
     protected void OnDisable()
     {
         Player.onPlayerShootBegin -= OnPlayerShootBegin;
+        PlayerShot.onPlayerShotArrived -= OnPlayerShotArrived;
     }
     protected void Awake()
     {
@@ -79,6 +82,10 @@ public class Boss : MonoBehaviour
     protected virtual IEnumerator SpawnRoutine()
     {
         Vector3 targetPosition = transform.position;
+        transform.position = new Vector3(targetPosition.x, targetPosition.y - 20, targetPosition.z);
+        yield return null;
+        transform.DOMoveY(targetPosition.y, _spawnDuration).SetEase(Ease.OutBack);
+        /*
         Vector3 startPosition = new Vector3(targetPosition.x, targetPosition.y - 10, targetPosition.z);
         float spawnPercent = 0;
         while (spawnPercent < 1)
@@ -88,6 +95,9 @@ public class Boss : MonoBehaviour
             transform.position = Vector3.Lerp(startPosition, targetPosition, curvePercent);
             yield return null;
         }
+        */
+        yield return new WaitForSeconds(_spawnDuration - 2f); // idle duration is 2 seconds
+        yield return null;
         transform.position = targetPosition;
         ChangeState(BossState.Idle);
     }
@@ -173,9 +183,17 @@ public class Boss : MonoBehaviour
     protected virtual void OnPlayerShootBegin(float damage)
     {
         
-        TakeDamage(damage);
+        //TakeDamage(damage);
         
     }
 
+    protected virtual void OnPlayerShotArrived(float damage)
+    {
+        if (_currentState == BossState.Dead)
+        {
+            return;
+        }
+        TakeDamage(damage);
+    }
    
 }

@@ -16,11 +16,13 @@ public class RiskBar : MonoBehaviour
     [SerializeField] private ParticleSystem _shootParticle;
     [SerializeField] private ParticleSystem _increaseParticle;
     [SerializeField] private AudioClip _increaseClip;
+    [SerializeField] private AudioClip _increaseByPickupClip;
 
     bool isFull = false;
     Color frameStartColor;
 
     private Tween _increaseTween;
+    private Tween _increaseByPickupTween;
     private float _scaleDuration = 0.15f;
     private Sequence _fullSequence;
 
@@ -30,12 +32,14 @@ public class RiskBar : MonoBehaviour
     private void OnEnable()
     {
         ArcManager.onRiskZoneHit += OnRiskZoneHit;
+        ArcManager.onPlayerShotPickup += PlayerShotPickUp;
         Player.onPlayerShootBegin += PlayerShoot;
     }
 
     private void OnDisable()
     {
         ArcManager.onRiskZoneHit -= OnRiskZoneHit;
+        ArcManager.onPlayerShotPickup -= PlayerShotPickUp;
         Player.onPlayerShootBegin -= PlayerShoot;
     }
 
@@ -48,6 +52,13 @@ public class RiskBar : MonoBehaviour
            .SetLoops(2, LoopType.Yoyo) // expand and contract
            .SetAutoKill(false)
            .Pause();
+
+        _increaseByPickupTween = transform.DOScale(transform.localScale * 1.8f, _scaleDuration * 2)
+            .SetEase(Ease.OutQuad)
+            .SetLoops(2, LoopType.Yoyo) // expand and contract
+            .SetAutoKill(false)
+            .Pause();
+
         /*
         _shakeTween = transform.DOShakeRotation(0.1f, new Vector3(0, 0, 2), 10, 90f, false, ShakeRandomnessMode.Full)
             .SetAutoKill(false)
@@ -78,6 +89,19 @@ public class RiskBar : MonoBehaviour
         }
         SetFillAmount();
         Invoke(nameof(BarIncreaseFX), 0.0f);
+    }
+
+    private void PlayerShotPickUp()
+    {
+        _currentRisk += _maxRisk/2f; // half the bar
+        if (_currentRisk >= _maxRisk)
+        {
+            _currentRisk = _maxRisk;
+            isFull = true;
+            onRiskBarFull?.Invoke();
+        }
+        SetFillAmount();
+        Invoke(nameof(BarIncreaseByPickupFX), 0.0f);
     }
 
     public void PlayerShoot(float _)
@@ -121,6 +145,18 @@ public class RiskBar : MonoBehaviour
         _increaseTween.Restart();
         AudioManager.Instance.KillSFX(_increaseClip);
         AudioManager.Instance.PlaySFX(_increaseClip);
+        _increaseParticle.Play();
+    }
+
+    private void BarIncreaseByPickupFX()
+    {
+        if (!_increaseByPickupTween.IsPlaying())
+        {
+            _increaseByPickupTween.Restart();
+        }
+
+        AudioManager.Instance.KillSFX(_increaseByPickupClip);
+        AudioManager.Instance.PlaySFX(_increaseByPickupClip);
         _increaseParticle.Play();
     }
 }

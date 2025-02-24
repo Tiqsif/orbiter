@@ -89,7 +89,7 @@ public class RiskZone : MonoBehaviour
         // tween scale up from 0
         Vector3 originalScale = indicator.transform.localScale;
         indicator.transform.localScale = Vector3.zero;
-        indicator.transform.DOScale(originalScale, 0.5f).SetEase(Ease.OutElastic);
+        indicator.transform.DOScale(originalScale, 0.8f).SetEase(Ease.OutBounce);
     }
 
     private void DestroySelf()
