@@ -16267,6 +16267,11 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4866678935927093310, guid: 3774363144690794ea83899627e166f8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 5518860655538191397, guid: 3774363144690794ea83899627e166f8,
         type: 3}
       propertyPath: m_Camera
@@ -16353,6 +16358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7590905093442123496, guid: 3774363144690794ea83899627e166f8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 105.17999
       objectReference: {fileID: 0}
     - target: {fileID: 8478690578875727065, guid: 3774363144690794ea83899627e166f8,
         type: 3}
@@ -16570,7 +16580,7 @@ PrefabInstance:
     - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
       propertyPath: isInvincible
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3996709247418766281, guid: 28ff83e130d90994a9cfc184eb1f269d,
         type: 3}
